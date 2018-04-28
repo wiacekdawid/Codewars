@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
@@ -9,6 +12,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        buildConfigField 'String', 'API_BASE_URL', api_base_url
+        buildConfigField 'String', 'ACCESS_KEY', access_key
     }
     buildTypes {
         release {
@@ -18,10 +24,72 @@ android {
     }
 }
 
+ext {
+    multidexVersion = '1.0.1'
+    supportLibraryVersion = '26.1.0'
+    archLifecycleVersion = '1.1.1'
+    archPersistenceVersion = '1.0.0'
+    rxandroidVersion = '2.0.2'
+    rxjavaVersion = '2.1.12'
+    retrofitVersion = '2.4.0'
+    okhttp3Version = '3.10.0'
+    gsonVersion = '2.8.2'
+    daggerVersion = '2.14.1'
+    timberVersion = '4.7.0'
+
+    junitVersion = '4.12'
+
+    testRunnerVersion = '1.0.1'
+    espressoVersion = '3.0.1'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation "com.android.support:multidex:$multidexVersion"
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
+
+    annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:$archPersistenceVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$archPersistenceVersion"
+
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3Version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit-mock:$retrofitVersion"
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+    // Test helpers for LiveData
+    testImplementation "android.arch.core:core-testing:$archLifecycleVersion"
+
+    // Test helpers for Room
+    testImplementation "android.arch.persistence.room:testing:$archPersistenceVersion"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    // Unit Tests
+    testImplementation "junit:junit:$junitVersion"
+
+    // UI Tests
+    androidTestImplementation "com.android.support.test:runner:$testRunnerVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+}
+repositories {
+    mavenCentral()
 }
