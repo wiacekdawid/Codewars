@@ -2,11 +2,15 @@ package com.wiacekdawid.codewars.di.modules
 
 import android.arch.persistence.room.Room
 import com.wiacekdawid.codewars.CodewarsApplication
-import com.wiacekdawid.codewars.data.local.DbDataSource
+import com.wiacekdawid.codewars.data.local.LocalDataSource
+import com.wiacekdawid.codewars.data.remote.RemoteDataSource
+import com.wiacekdawid.codewars.data.remote.api.CodewarsService
+import com.wiacekdawid.codewars.data.repository.CodewarsRepository
 import com.wiacekdawid.codewars.di.components.CodewarsActivitySubcomponent
 import com.wiacekdawid.codewars.di.scopes.ApplicationScope
 import dagger.Module
 import dagger.Provides
+import retrofit2.Retrofit
 
 /**
  * Created by dawidwiacek on 28/04/2018.
@@ -14,9 +18,26 @@ import dagger.Provides
 
 @Module(subcomponents = [(CodewarsActivitySubcomponent::class)])
 class ApplicationModule {
-    @Provides
+
     @ApplicationScope
-    internal fun provideMainDatabase(codewarsApplication: CodewarsApplication) = Room.databaseBuilder(codewarsApplication,
-            DbDataSource::class.java, "codewars.db")
-            .build()
+    @Provides
+    internal fun provideCodewarsService(retrofit: Retrofit) = retrofit.create(CodewarsService::class.java)
+
+    @ApplicationScope
+    @Provides
+    internal fun provideRemoteDataSource(codewarsService: CodewarsService) = RemoteDataSource(codewarsService)
+
+   /*@ApplicationScope
+    @Provides
+    internal fun provideLocalDataSource(codewarsApplication: CodewarsApplication): LocalDataSource =*/
+
+
+    @ApplicationScope
+    @Provides
+    internal fun provideCodewarsRepository(codewarsApplication: CodewarsApplication,
+                                           remoteDataSource: RemoteDataSource) =
+        CodewarsRepository(remoteDataSource, Room.databaseBuilder(codewarsApplication,
+                LocalDataSource::class.java, "codewars.db")
+                .build())
+
 }

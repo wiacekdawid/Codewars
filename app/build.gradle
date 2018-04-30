@@ -22,13 +22,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 ext {
-    multidexVersion = '1.0.1'
+    multidexVersion = '1.0.3'
     supportLibraryVersion = '26.1.0'
     archLifecycleVersion = '1.1.1'
     archPersistenceVersion = '1.0.0'
+    constraintLayoutVersion = '1.1.0'
     rxandroidVersion = '2.0.2'
     rxjavaVersion = '2.1.12'
     retrofitVersion = '2.4.0'
@@ -52,12 +57,13 @@ dependencies {
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
 
-    annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
+    kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
 
     // Room
     implementation "android.arch.persistence.room:runtime:$archPersistenceVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$archPersistenceVersion"
+    kapt "android.arch.persistence.room:compiler:$archPersistenceVersion"
 
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"

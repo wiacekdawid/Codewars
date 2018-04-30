@@ -4,6 +4,7 @@ import com.wiacekdawid.codewars.CodewarsApplication
 import com.wiacekdawid.codewars.di.modules.ActivityBuilder
 import com.wiacekdawid.codewars.di.modules.ApplicationModule
 import com.wiacekdawid.codewars.di.modules.NetModule
+import com.wiacekdawid.codewars.di.scopes.ApplicationScope
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -13,8 +14,8 @@ import javax.inject.Singleton
  * Created by dawidwiacek on 28/04/2018.
  */
 
-@Singleton
-@Component(modules = arrayOf(AndroidSupportInjectionModule::class, ApplicationModule::class, NetModule::class, ActivityBuilder::class))
+@ApplicationScope
+@Component(modules = [(AndroidSupportInjectionModule::class), (ApplicationModule::class), (NetModule::class), (ActivityBuilder::class)])
 interface ApplicationComponent {
 
     @Component.Builder
