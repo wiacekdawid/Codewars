@@ -14,7 +14,9 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
 
     fun getMember(searchText: String?): Single<Member> {
         return remoteDataSource.getMember(searchText)
-                .map { Member(uid = "0", name = it?.body()?.name, username = it?.body()?.name) }
+                .map {
+                    Member(uid = "0", name = it?.body()?.name, username = it?.body()?.name)
+                }
 
     }
 }

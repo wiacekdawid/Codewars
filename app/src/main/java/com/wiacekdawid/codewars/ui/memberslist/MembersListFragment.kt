@@ -36,6 +36,6 @@ class MembersListFragment: Fragment() {
         val binding = FragmentMembersListBinding.inflate(inflater, container, false)
         binding.viewmodel = membersListViewModel
         binding.setLifecycleOwner(this)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return binding.root
     }
 }

@@ -5,5 +5,5 @@ package com.wiacekdawid.codewars.data.remote.api
  */
 
 object CodewarsApiContract{
-    const val USERS_ENDPOINT = "users"
+    const val USERS_ENDPOINT = "users/"
 }
