@@ -5,12 +5,12 @@ import android.arch.persistence.room.PrimaryKey
 import android.support.annotation.NonNull
 
 /**
- * Created by dawidwiacek on 28/04/2018.
+ * Created by dawidwiacek on 01/05/2018.
  */
 
-@Entity(tableName = "member_table")
-data class Member(
+@Entity(tableName = "authored_challenge_table")
+data class AuthoredChallenge(
         @PrimaryKey
         @NonNull
-        val username: String,
+        val uid: String,
         val name: String?)

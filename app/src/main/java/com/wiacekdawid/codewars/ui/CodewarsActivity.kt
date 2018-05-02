@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.wiacekdawid.codewars.R
+import com.wiacekdawid.codewars.ui.challengeslist.ChallengesListFragment
 import com.wiacekdawid.codewars.ui.memberslist.MembersListFragment
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -15,7 +16,7 @@ import javax.inject.Inject
  * Created by dawidwiacek on 28/04/2018.
  */
 
-class CodewarsActivity: AppCompatActivity(), HasSupportFragmentInjector {
+class CodewarsActivity: AppCompatActivity(), AttachedCodewarsActivity, HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -28,11 +29,18 @@ class CodewarsActivity: AppCompatActivity(), HasSupportFragmentInjector {
             return
         }
 
-        val membersListFragment = MembersListFragment()
-
         supportFragmentManager.beginTransaction()
-                .add(R.id.ac_fl_container, membersListFragment).commit()
+                .add(R.id.ac_fl_container, MembersListFragment()).commit()
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
+
+    override fun openChallenges(memberId: String) {
+        val challengesListFragment = ChallengesListFragment()
+        var bundle = Bundle()
+        bundle.putString(ChallengesListFragment.MEMBER_ID, memberId)
+        challengesListFragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.ac_fl_container, challengesListFragment).commit()
+    }
 }

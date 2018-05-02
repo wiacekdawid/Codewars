@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
+import com.wiacekdawid.codewars.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -14,8 +15,9 @@ import timber.log.Timber
  */
 
 class MembersListViewModel(private val codewarsRepository: CodewarsRepository): ViewModel() {
-    var foundedMember: MutableLiveData<String>? = null
-    var listOfLastSearchedMembers: MutableLiveData<List<Member>>? = null
+    var foundedMember: MutableLiveData<String> = MutableLiveData()
+    var listOfLastSearchedMembers: MutableLiveData<List<Member>>? = MutableLiveData()
+    var selectMember = SingleLiveEvent<String>()
 
     var searchText: ObservableField<String> = ObservableField()
 
@@ -25,10 +27,14 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if(it != null) {
-                        foundedMember?.value = it.username
+                        foundedMember.postValue(it.username)
                     }
                 }, {
                     Timber.e(it)
                 })
+    }
+
+    fun clickOnMember() {
+        selectMember.postValue(foundedMember?.value)
     }
 }

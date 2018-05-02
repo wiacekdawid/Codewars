@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/clbnm_i_completed"
+        android:title="@string/clbnm_completed"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/clbnm_i_authored"
+        android:title="@string/clbnm_authored"
+        app:showAsAction="ifRoom" />
+</menu>

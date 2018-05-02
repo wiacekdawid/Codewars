@@ -1,5 +1,6 @@
 package com.wiacekdawid.codewars.ui.memberslist
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wiacekdawid.codewars.databinding.FragmentMembersListBinding
+import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -30,6 +32,10 @@ class MembersListFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         membersListViewModel = ViewModelProviders.of(this, membersListViewModelFactory).get(MembersListViewModel::class.java)
+
+        membersListViewModel.selectMember.observe(this, observer = Observer<String>() {
+            it?.let { (activity as AttachedCodewarsActivity).openChallenges(it)}
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

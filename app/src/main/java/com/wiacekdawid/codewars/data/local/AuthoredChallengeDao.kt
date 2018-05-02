@@ -6,17 +6,17 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 
 /**
- * Created by dawidwiacek on 28/04/2018.
+ * Created by dawidwiacek on 01/05/2018.
  */
 
 @Dao
-interface MemberDao {
+interface AuthoredChallengeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(member: Member)
+    fun insert(authoredChallenge: AuthoredChallenge)
 
-    @Query("DELETE FROM member_table")
+    @Query("DELETE FROM authored_challenge_table")
     fun deleteAll()
 
-    @Query("SELECT * from member_table ORDER BY username ASC")
-    fun getAllMembers(): List<Member>
+    @Query("SELECT * from authored_challenge_table ORDER BY uid ASC")
+    fun getAllAuthoredChallenges(): List<AuthoredChallenge>
 }

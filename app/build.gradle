@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.wiacekdawid.codewars"
         minSdkVersion 15
@@ -30,9 +30,10 @@ android {
 
 ext {
     multidexVersion = '1.0.3'
-    supportLibraryVersion = '26.1.0'
+    supportLibraryVersion = '27.1.0'
     archLifecycleVersion = '1.1.1'
     archPersistenceVersion = '1.0.0'
+    archPagingVersion = '1.0.0-rc1'
     constraintLayoutVersion = '1.1.0'
     rxandroidVersion = '2.0.2'
     rxjavaVersion = '2.1.12'
@@ -58,10 +59,13 @@ dependencies {
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
 
+    implementation "android.arch.paging:runtime:$archPagingVersion"
+
     kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
 
     // Room
     implementation "android.arch.persistence.room:runtime:$archPersistenceVersion"
+    implementation "android.arch.persistence.room:rxjava2:$archPersistenceVersion"
     kapt "android.arch.persistence.room:compiler:$archPersistenceVersion"
 
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"

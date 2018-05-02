@@ -60,6 +60,7 @@
             app:layout_constraintHeight_default="wrap"
             android:padding="16dp"
             android:text="@{viewmodel.foundedMember}"
+            android:onClick="@{() -> viewmodel.clickOnMember()}"
             android:textColor="@color/colorAccent"/>
 
     </android.support.constraint.ConstraintLayout>
