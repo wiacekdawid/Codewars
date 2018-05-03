@@ -8,13 +8,14 @@
     </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/Background">
 
         <TextView
             android:id="@+id/icl_tv_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            style="@style/BodyText"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -9,7 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
+        style="@style/Background"
         android:layout_gravity="top">
 
         <android.support.v7.widget.RecyclerView
@@ -31,7 +31,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constrainedHeight="true"
-            app:itemBackground="@color/colorPrimary"
+            style="@style/Background"
             app:itemIconTint="@color/colorAccent"
             app:itemTextColor="@color/colorAccent"
             app:menu="@menu/challenges_list_bottom_nav_menu" />

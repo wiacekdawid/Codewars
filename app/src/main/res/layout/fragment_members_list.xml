@@ -12,7 +12,8 @@
     <android.support.constraint.ConstraintLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        style="@style/Background">
 
 
         <android.support.design.widget.TextInputLayout
@@ -27,6 +28,7 @@
 
             <EditText
                 android:id="@+id/username"
+                style="@style/BodyText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -39,29 +41,27 @@
             android:id="@+id/fml_b_search"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="16dp"
+            style="@style/BodyText"
             app:layout_constraintTop_toBottomOf="@+id/fml_til_search"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintWidth_default="wrap"
             app:layout_constraintHeight_default="wrap"
             android:onClick="@{() -> viewmodel.searchMember()}"
-            android:text="@string/fml_search"
-            android:textColor="@color/colorAccent"/>
+            android:text="@string/fml_search" />
 
         <TextView
             android:id="@+id/fml_tv_founded_member"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/BodyText"
             app:layout_constraintTop_toBottomOf="@+id/fml_b_search"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintWidth_default="wrap"
             app:layout_constraintHeight_default="wrap"
-            android:padding="16dp"
             android:text="@{viewmodel.foundedMember}"
-            android:onClick="@{() -> viewmodel.clickOnMember()}"
-            android:textColor="@color/colorAccent"/>
+            android:onClick="@{() -> viewmodel.clickOnMember()}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
