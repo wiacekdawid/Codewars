@@ -10,13 +10,13 @@ import android.support.annotation.NonNull
  */
 
 @Entity(foreignKeys = [(ForeignKey(entity = Member::class,
-        parentColumns = arrayOf("username"),
-        childColumns = arrayOf("username"),
+        parentColumns = arrayOf("userName"),
+        childColumns = arrayOf("userName"),
         onDelete = ForeignKey.CASCADE))], tableName = "completed_challenge_table")
 data class CompletedChallenge(
         @PrimaryKey
         @NonNull
         val uid: String,
         val name: String?,
-        val username: String)
+        val userName: String)
 

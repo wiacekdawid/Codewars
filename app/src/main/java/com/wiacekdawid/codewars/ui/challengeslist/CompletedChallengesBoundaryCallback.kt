@@ -16,7 +16,7 @@ class CompletedChallengesBoundaryCallback(val codewarsRepository: CodewarsReposi
         PagedList.BoundaryCallback<CompletedChallenge>() {
 
     override fun onItemAtEndLoaded(itemAtEnd: CompletedChallenge) {
-        codewarsRepository.fetchCompletedChallenges(challengesListViewModel.username)
+        /*codewarsRepository.fetchCompletedChallenges(challengesListViewModel.username)
                 .subscribeOn(Schedulers.io())
                 .map {
                     var listOfCompletedChallenge: MutableList<CompletedChallenge> = arrayListOf()
@@ -35,12 +35,12 @@ class CompletedChallengesBoundaryCallback(val codewarsRepository: CodewarsReposi
                     Timber.i("success")
                 }, {
                     Timber.e(it)
-                })
+                })*/
 
     }
 
     override fun onZeroItemsLoaded() {
-        codewarsRepository.fetchCompletedChallenges(challengesListViewModel.username)
+        /*codewarsRepository.fetchCompletedChallenges(challengesListViewModel.username)
                 .subscribeOn(Schedulers.io())
                 .map {
                     var listOfCompletedChallenge: MutableList<CompletedChallenge> = arrayListOf()
@@ -59,6 +59,6 @@ class CompletedChallengesBoundaryCallback(val codewarsRepository: CodewarsReposi
                     Timber.i("success")
                 }, {
                     Timber.e(it)
-                })
+                })*/
     }
 }

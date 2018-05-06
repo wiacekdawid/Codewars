@@ -28,7 +28,7 @@ import javax.inject.Inject
 class ChallengesListFragment: Fragment() {
 
     companion object {
-        const val MEMBER_ID = "username"
+        const val MEMBER_ID = "userName"
     }
 
     @Inject
@@ -65,11 +65,11 @@ class ChallengesListFragment: Fragment() {
                 Observer<PagedList<CompletedChallenge>> {
                     challengesListAdapter?.submitList(it)
                 })
-        //challengesListAdapter?.submitList(challengesListViewModel.completedChallenges?.value)
+
         recyclerView?.adapter = challengesListAdapter
         recyclerView?.layoutManager = linearLayoutManager
-        /*recyclerView?.addItemDecoration(
-                object : DividerItemDecoration(activity, linearLayoutManager?.orientation ?: LinearLayoutManager(activity).orientation) {
+        recyclerView?.addItemDecoration(
+                object : DividerItemDecoration(activity, linearLayoutManager?.orientation) {
                     override fun getItemOffsets(outRect: Rect, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
                         val position = parent!!.getChildAdapterPosition(view)
                         // hide the divider for the last child
@@ -80,6 +80,6 @@ class ChallengesListFragment: Fragment() {
                         }
                     }
                 }
-        )*/
+        )
     }
 }

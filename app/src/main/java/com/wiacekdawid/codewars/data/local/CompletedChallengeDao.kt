@@ -19,9 +19,9 @@ interface CompletedChallengeDao {
     @Query("DELETE FROM completed_challenge_table")
     fun deleteAll()
 
-    @Query("SELECT * from completed_challenge_table WHERE username=:username ORDER BY uid ASC")
-    fun getAllCompletedChallengesForMember(username: String): DataSource.Factory<Int, CompletedChallenge>
+    @Query("SELECT * from completed_challenge_table WHERE userName=:userName ORDER BY uid ASC")
+    fun getAllCompletedChallengesForMember(userName: String): DataSource.Factory<Int, CompletedChallenge>
 
-    @Query("SELECT COUNT(*) from completed_challenge_table WHERE username=:username")
-    fun countCompletedChallengesForMember(username: String): Single<Int>
+    @Query("SELECT COUNT(*) from completed_challenge_table WHERE userName=:userName")
+    fun countCompletedChallengesForMember(userName: String): Single<Int>
 }

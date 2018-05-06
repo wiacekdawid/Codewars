@@ -1,42 +1,58 @@
 package com.wiacekdawid.codewars.data.repository
 
 import android.arch.paging.DataSource
+import android.net.ConnectivityManager
 import com.wiacekdawid.codewars.data.local.CompletedChallenge
 import com.wiacekdawid.codewars.data.local.LocalDataSource
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
-import com.wiacekdawid.codewars.data.remote.api.CompletedChallengeDto
-import com.wiacekdawid.codewars.data.remote.api.ResponsePaginatedDto
 import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
-import retrofit2.Response
+import android.net.NetworkInfo
+
+
 
 /**
  * Created by dawidwiacek on 29/04/2018.
  */
 
 class CodewarsRepository(val remoteDataSource: RemoteDataSource,
-                         val localDataSource: LocalDataSource) {
+                         val localDataSource: LocalDataSource,
+                         val connectivityManager: ConnectivityManager) {
 
-    fun getMember(searchText: String?): Single<Member> {
-        return remoteDataSource.getMember(searchText)
-                .map {
-                    it.body()?.let {
-                        var member = Member(name = it.name, username = it.userName)
-                        localDataSource.membersDao().insert(member = member)
-                        member
-                    }
-                }
+    private var memberList: HashMap<String, Member> = HashMap()
+
+    fun getMember(searchText: String): Single<Member> {
+
+        var member = memberList[searchText]
+
+        // if member is in our cache we return it
+        if(member != null) {
+            return Single.just(member)
+        }
+        else {
+            val activeNetwork = connectivityManager.activeNetworkInfo
+
+            if(activeNetwork != null && activeNetwork.isConnectedOrConnecting) {
+
+                return localDataSource.membersDao().getMember(searchText)
+                        .switchIfEmpty(remoteDataSource.getMember(searchText))
+                        .doOnSuccess {
+                            if (!it.userName.equals(Member.DEFAULT_USER_NAME)) {
+                                localDataSource.membersDao().insert(it)
+                            }
+                        }
+            }
+            return localDataSource.membersDao().getMember(searchText)
+                    .switchIfEmpty(Single.just(Member()))
+        }
     }
 
     fun getCompletedChallenges(username: String): DataSource.Factory<Int, CompletedChallenge> {
         return localDataSource.completedChallengeDao().getAllCompletedChallengesForMember(username)
     }
 
-    fun fetchCompletedChallenges(memberId: String): Single<Response<ResponsePaginatedDto>> {
+    /*fun fetchCompletedChallenges(memberId: String): Observable<ResponsePaginatedDto> {
         return localDataSource
                 .completedChallengeDao()
                 .countCompletedChallengesForMember(memberId)
@@ -48,7 +64,7 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                     }
                     remoteDataSource.getCompletedChallenges(memberId, page)
                 }
-    }
+    }*/
 
     fun addCompletedChallengesToDB(challenges: List<CompletedChallenge>): Completable {
         return Completable.fromRunnable({

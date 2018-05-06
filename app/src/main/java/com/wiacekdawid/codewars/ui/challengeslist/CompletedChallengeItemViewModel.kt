@@ -19,6 +19,6 @@ class CompletedChallengeItemViewModel(name: String = ""): BaseObservable() {
         }
 
     fun setItem(completedChallage: CompletedChallenge?) {
-        name = completedChallage?.username ?: completedChallage?.name ?: "test"
+        name = completedChallage?.name ?: completedChallage?.userName ?: "test"
     }
 }

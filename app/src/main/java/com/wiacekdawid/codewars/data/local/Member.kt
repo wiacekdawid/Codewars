@@ -12,5 +12,11 @@ import android.support.annotation.NonNull
 data class Member(
         @PrimaryKey
         @NonNull
-        val username: String,
-        val name: String?)
+        var userName: String = DEFAULT_USER_NAME,
+        var name: String? = null,
+        var rank: Int = DEFAULT_RANK) {
+        companion object {
+                const val DEFAULT_USER_NAME = "DEFAULT_USER_NAME"
+                const val DEFAULT_RANK = 0
+        }
+}

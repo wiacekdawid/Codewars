@@ -12,16 +12,29 @@
         style="@style/Background"
         android:layout_gravity="top">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fcl_rv_challenges"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/fcl_srl_refresh"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/fcl_bnv_menu"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constrainedHeight="true"
-            />
+            app:layout_constrainedHeight="true">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fcl_rv_challenges"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.v4.widget.ContentLoadingProgressBar
+            android:id="@+id/fcl_clpb_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminate="true" />
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/fcl_bnv_menu"

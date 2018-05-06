@@ -1,7 +1,15 @@
 <resources>
+    <!-- General -->
     <string name="app_name">Codewars</string>
+
+    <!-- Fragment member search -->
     <string name="fml_search_text_hint">Enter user name or id:</string>
     <string name="fml_search">Search</string>
+    <string name="fml_no_search_result">There are no results that match your search.</string>
+    <string name="fml_error_msg_during_searching">An error occurred. Please try again.</string>
+
+    <!-- Challenges list bottom nav menu -->
     <string name="clbnm_completed">Completed</string>
     <string name="clbnm_authored">Authored</string>
+
 </resources>

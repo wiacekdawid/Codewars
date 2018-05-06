@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  */
 
 data class MemberDto(@SerializedName("username")
-                     var userName: String,
+                     var userName: String?,
                      @SerializedName("name")
                      var name: String?,
                      @SerializedName("ranks")

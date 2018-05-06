@@ -33,7 +33,7 @@ class MembersListFragment: Fragment() {
         super.onCreate(savedInstanceState)
         membersListViewModel = ViewModelProviders.of(this, membersListViewModelFactory).get(MembersListViewModel::class.java)
 
-        membersListViewModel.selectMember.observe(this, observer = Observer<String>() {
+        membersListViewModel.selectMember.observe(this, observer = Observer() {
             it?.let { (activity as AttachedCodewarsActivity).openChallenges(it)}
         })
     }
