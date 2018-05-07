@@ -2,6 +2,7 @@ package com.wiacekdawid.codewars
 
 import android.app.Activity
 import android.support.multidex.MultiDexApplication
+import com.facebook.stetho.Stetho
 import com.wiacekdawid.codewars.di.components.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -27,6 +28,7 @@ class CodewarsApplication : MultiDexApplication(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+        Stetho.initializeWithDefaults(this)
         initDI()
         initLogger()
     }

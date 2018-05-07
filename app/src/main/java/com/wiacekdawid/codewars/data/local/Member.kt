@@ -14,7 +14,8 @@ data class Member(
         @NonNull
         var userName: String = DEFAULT_USER_NAME,
         var name: String? = null,
-        var rank: Int = DEFAULT_RANK) {
+        var rank: Int = DEFAULT_RANK,
+        var lastSearchTime: Long = Long.MAX_VALUE) {
         companion object {
                 const val DEFAULT_USER_NAME = "DEFAULT_USER_NAME"
                 const val DEFAULT_RANK = 0

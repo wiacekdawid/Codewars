@@ -66,6 +66,7 @@ dependencies {
     // Room
     implementation "android.arch.persistence.room:runtime:$archPersistenceVersion"
     implementation "android.arch.persistence.room:rxjava2:$archPersistenceVersion"
+    implementation 'com.facebook.stetho:stetho:1.5.0'
     kapt "android.arch.persistence.room:compiler:$archPersistenceVersion"
 
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"

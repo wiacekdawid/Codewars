@@ -6,6 +6,7 @@ import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
 import com.wiacekdawid.codewars.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.internal.schedulers.ScheduledDirectPeriodicTask
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
@@ -18,10 +19,28 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
     var noFoundMemberMsgVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var foundedMember: MutableLiveData<String> = MutableLiveData()
     var loading: MutableLiveData<Boolean> = MutableLiveData()
-    var listOfLastSearchedMembers: MutableLiveData<List<Member>>? = MutableLiveData()
+    var lastSearchedMembers: MutableLiveData<List<Member>> = MutableLiveData()
+    var lastSearchedMembersVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var selectMember = SingleLiveEvent<String>()
 
     var searchText: MutableLiveData<String> = MutableLiveData()
+
+    fun refreshLastSearchedMembers() {
+        codewarsRepository.getLastSearchedMembers()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    lastSearchedMembers.postValue(it.take(5))
+                    lastSearchedMembersVisibility.postValue(true)
+                }, {
+                    Timber.e(it)
+                    lastSearchedMembersVisibility.postValue(false)
+                    lastSearchedMembers.postValue(listOf())
+                },{
+                    lastSearchedMembersVisibility.postValue(false)
+                    lastSearchedMembers.postValue(listOf())
+                })
+    }
 
     fun searchMember() {
         searchText.value?.let {

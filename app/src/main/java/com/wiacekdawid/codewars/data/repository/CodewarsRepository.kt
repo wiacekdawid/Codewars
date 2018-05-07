@@ -7,9 +7,8 @@ import com.wiacekdawid.codewars.data.local.LocalDataSource
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
-import android.net.NetworkInfo
-
 
 
 /**
@@ -21,6 +20,8 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                          val connectivityManager: ConnectivityManager) {
 
     private var memberList: HashMap<String, Member> = HashMap()
+
+    fun getLastSearchedMembers(): Maybe<List<Member>> = localDataSource.membersDao().getAllMembersSortedByLastSearchedTime()
 
     fun getMember(searchText: String): Single<Member> {
 
@@ -38,8 +39,9 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                 return localDataSource.membersDao().getMember(searchText)
                         .switchIfEmpty(remoteDataSource.getMember(searchText))
                         .doOnSuccess {
-                            if (!it.userName.equals(Member.DEFAULT_USER_NAME)) {
+                            if (it.userName != Member.DEFAULT_USER_NAME) {
                                 localDataSource.membersDao().insert(it)
+                                memberList[it.userName] = it
                             }
                         }
             }

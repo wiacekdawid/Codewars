@@ -30,6 +30,7 @@ class RemoteDataSource(private val codewarsService: CodewarsService) {
                         member.userName = it.userName as String
                         member.name = it.name
                         member.rank = it.ranks?.rank?.rank ?: Member.DEFAULT_RANK
+                        member.lastSearchTime = System.currentTimeMillis()
                     }
                     member
                 }

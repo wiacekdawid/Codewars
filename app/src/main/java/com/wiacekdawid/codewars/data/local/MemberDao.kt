@@ -22,6 +22,9 @@ interface MemberDao {
     @Query("SELECT * from member_table ORDER BY userName ASC")
     fun getAllMembers(): List<Member>
 
+    @Query("SELECT * from member_table ORDER BY lastSearchTime ASC")
+    fun getAllMembersSortedByLastSearchedTime(): Maybe<List<Member>>
+
     @Query("SELECT * from member_table WHERE userName=:userName")
     fun getMember(userName: String): Maybe<Member>
 }
