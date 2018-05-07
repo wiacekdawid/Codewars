@@ -33,7 +33,7 @@ class ChallengesListAdapter: PagedListAdapter<CompletedChallenge, ViewHolder>(di
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<CompletedChallenge>() {
             override fun areItemsTheSame(oldItem: CompletedChallenge, newItem: CompletedChallenge): Boolean =
-                    oldItem.uid == newItem.uid
+                    oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: CompletedChallenge, newItem: CompletedChallenge): Boolean =
                     oldItem == newItem

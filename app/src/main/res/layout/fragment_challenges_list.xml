@@ -16,6 +16,8 @@
             android:id="@+id/fcl_srl_refresh"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:refreshing="@{viewModel.isLoading}"
+            app:onRefreshListener="@{() -> viewModel.onRefresh(true)}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/fcl_bnv_menu"
             app:layout_constraintLeft_toLeftOf="parent"

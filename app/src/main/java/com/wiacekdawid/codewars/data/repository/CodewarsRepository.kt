@@ -6,9 +6,12 @@ import com.wiacekdawid.codewars.data.local.CompletedChallenge
 import com.wiacekdawid.codewars.data.local.LocalDataSource
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
+import com.wiacekdawid.codewars.data.remote.api.ResponsePaginatedDto
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 
 /**
@@ -20,6 +23,11 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                          val connectivityManager: ConnectivityManager) {
 
     private var memberList: HashMap<String, Member> = HashMap()
+    private var currentPage = 0
+
+    fun resetPaginationData() {
+        currentPage = 0
+    }
 
     fun getLastSearchedMembers(): Maybe<List<Member>> = localDataSource.membersDao().getAllMembersSortedByLastSearchedTime()
 
@@ -54,19 +62,23 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
         return localDataSource.completedChallengeDao().getAllCompletedChallengesForMember(username)
     }
 
-    /*fun fetchCompletedChallenges(memberId: String): Observable<ResponsePaginatedDto> {
-        return localDataSource
-                .completedChallengeDao()
-                .countCompletedChallengesForMember(memberId)
-                .subscribeOn(Schedulers.io())
-                .flatMap {
-                    var page: Int = 0
-                    if(it > 0) {
-                        page = it / RemoteDataSource.DEFAULT_ITEM_PER_PAGE
+    fun loadMoreCompletedChallenges(userName: String): Single<ResponsePaginatedDto> {
+        return remoteDataSource
+                .getCompletedChallenges(userName, currentPage)
+                .doOnSuccess {
+                    if(it.data?.size > 0) {
+                        currentPage++
                     }
-                    remoteDataSource.getCompletedChallenges(memberId, page)
+                    else {
+                        currentPage = 0
+                    }
+                    it.data?.forEach {
+                        localDataSource
+                                .completedChallengeDao()
+                                .insert(CompletedChallenge(name = it.name, userName = userName))
+                    }
                 }
-    }*/
+    }
 
     fun addCompletedChallengesToDB(challenges: List<CompletedChallenge>): Completable {
         return Completable.fromRunnable({

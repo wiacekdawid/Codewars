@@ -1,6 +1,5 @@
 package com.wiacekdawid.codewars.data.remote.api
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,10 +14,9 @@ interface CodewarsService {
     fun getMember(@Path(CodewarsApiContract.USERNAME_PARAM) username: String?): Single<MemberDto>
 
     @GET(CodewarsApiContract.COMPLETED_CHALLENGES_ENDPOINT)
-    fun getCompletedChallenges(@Path(CodewarsApiContract.USERNAME_PARAM) username: String?,
-                               @Query(CodewarsApiContract.PAGE_PARAM) page: Int): Observable<ResponsePaginatedDto>
+    fun getCompletedChallenges(@Path(CodewarsApiContract.USERNAME_PARAM) username: String,
+                               @Query(CodewarsApiContract.PAGE_PARAM) page: Int): Single<ResponsePaginatedDto>
 
     @GET(CodewarsApiContract.AUTHORED_CHALLENGES_ENDPOINT)
-    fun getAuthoredChallenges(@Path(CodewarsApiContract.USERNAME_PARAM) username: String?,
-                              @Query(CodewarsApiContract.PAGE_PARAM) page: Int): Observable<List<AuthoredChallengeDto>>
+    fun getAuthoredChallenges(@Path(CodewarsApiContract.USERNAME_PARAM) username: String): Single<List<AuthoredChallengeDto>>
 }

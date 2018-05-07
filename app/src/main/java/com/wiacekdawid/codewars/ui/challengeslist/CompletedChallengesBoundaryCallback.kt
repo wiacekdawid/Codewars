@@ -16,49 +16,10 @@ class CompletedChallengesBoundaryCallback(val codewarsRepository: CodewarsReposi
         PagedList.BoundaryCallback<CompletedChallenge>() {
 
     override fun onItemAtEndLoaded(itemAtEnd: CompletedChallenge) {
-        /*codewarsRepository.fetchCompletedChallenges(challengesListViewModel.username)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    var listOfCompletedChallenge: MutableList<CompletedChallenge> = arrayListOf()
-                    for(completedChallengeDto in (it?.body()?.data as List<CompletedChallengeDto>)) {
-                        listOfCompletedChallenge.add(CompletedChallenge(completedChallengeDto.id,
-                                completedChallengeDto.name, challengesListViewModel.username))
-                    }
-                    listOfCompletedChallenge
-                }
-                .doAfterSuccess {
-                    codewarsRepository.addCompletedChallengesToDB(it)
-                            .subscribeOn(Schedulers.io())
-                            .subscribe { Timber.i("success") }
-                }
-                .subscribe({
-                    Timber.i("success")
-                }, {
-                    Timber.e(it)
-                })*/
-
+        challengesListViewModel.onRefresh(false)
     }
 
     override fun onZeroItemsLoaded() {
-        /*codewarsRepository.fetchCompletedChallenges(challengesListViewModel.username)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    var listOfCompletedChallenge: MutableList<CompletedChallenge> = arrayListOf()
-                    for(completedChallengeDto in (it?.body()?.data as List<CompletedChallengeDto>)) {
-                        listOfCompletedChallenge.add(CompletedChallenge(completedChallengeDto.id,
-                                completedChallengeDto.name, challengesListViewModel.username))
-                    }
-                    listOfCompletedChallenge
-                }
-                .doAfterSuccess {
-                    codewarsRepository.addCompletedChallengesToDB(it)
-                            .subscribeOn(Schedulers.io())
-                            .subscribe { Timber.i("success") }
-                }
-                .subscribe({
-                    Timber.i("success")
-                }, {
-                    Timber.e(it)
-                })*/
+        challengesListViewModel.onRefresh(true)
     }
 }

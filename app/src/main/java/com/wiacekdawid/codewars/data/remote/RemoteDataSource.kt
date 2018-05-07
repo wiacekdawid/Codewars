@@ -36,11 +36,11 @@ class RemoteDataSource(private val codewarsService: CodewarsService) {
                 }
     }
 
-    fun getCompletedChallenges(username: String, page: Int): Observable<ResponsePaginatedDto> {
+    fun getCompletedChallenges(username: String, page: Int): Single<ResponsePaginatedDto> {
         return codewarsService.getCompletedChallenges(username, page)
     }
 
-    fun getAuthoredChallenges(username: String, page: Int): Observable<List<AuthoredChallengeDto>> {
-        return codewarsService.getAuthoredChallenges(username, page)
+    fun getAuthoredChallenges(username: String): Single<List<AuthoredChallengeDto>> {
+        return codewarsService.getAuthoredChallenges(username)
     }
 }
