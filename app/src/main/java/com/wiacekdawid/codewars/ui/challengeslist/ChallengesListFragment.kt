@@ -11,6 +11,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import com.wiacekdawid.codewars.R
 import com.wiacekdawid.codewars.databinding.FragmentChallengesListBinding
 import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
 import dagger.android.support.AndroidSupportInjection
@@ -42,7 +43,7 @@ class ChallengesListFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(false)
+        setHasOptionsMenu(true)
         challengesListViewModel = ViewModelProviders.of(this, challengesListViewModelFactory).get(ChallengesListViewModel::class.java)
         challengesListViewModel.refreshList.observe(this, observer = Observer {
             challengesListViewModel.challenges?.observe(this,
@@ -61,9 +62,10 @@ class ChallengesListFragment: Fragment() {
         return fragmentChallengesListBinding?.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        menu?.clear()
-        super.onCreateOptionsMenu(menu, inflater)
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        super.onPrepareOptionsMenu(menu)
+        var menuItem = menu?.findItem(R.id.msm_i_sort)
+        menuItem?.isVisible = false
     }
 
     private fun setupRecyclerView() {

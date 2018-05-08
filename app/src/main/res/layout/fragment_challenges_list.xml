@@ -47,8 +47,8 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constrainedHeight="true"
             style="@style/Background"
-            app:itemIconTint="@color/colorAccent"
-            app:itemTextColor="@color/colorAccent"
+            app:itemIconTint="@color/challenge_list_bottom_navigation_state_list"
+            app:itemTextColor="@color/challenge_list_bottom_navigation_state_list"
             app:onNavigationItemSelected="@{viewModel::onNavigationClick}"
             app:menu="@menu/challenges_list_bottom_nav_menu" />
 

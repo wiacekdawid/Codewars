@@ -50,6 +50,9 @@ class MembersListFragment: Fragment() {
         return fragmentMembersListBinding?.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.members_sort_menu, menu)
+    }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.msm_i_sort_by_date -> {

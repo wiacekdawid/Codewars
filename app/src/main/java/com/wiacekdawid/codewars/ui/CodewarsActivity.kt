@@ -37,11 +37,6 @@ class CodewarsActivity: AppCompatActivity(), AttachedCodewarsActivity, HasSuppor
                 .add(R.id.ac_fl_container, MembersListFragment()).commit()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.members_sort_menu, menu)
-        return true
-    }
-
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
     override fun openChallenges(memberId: String) {
