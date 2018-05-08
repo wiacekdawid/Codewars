@@ -7,12 +7,13 @@ import android.widget.BaseAdapter
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.databinding.ItemLastSearchedMembersListBinding
 import com.wiacekdawid.codewars.R
+import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
 
 /**
  * Created by dawidwiacek on 06/05/2018.
  */
 
-class LastSearchedMembersListAdapter: BaseAdapter() {
+class LastSearchedMembersListAdapter(val attachedCodewarsActivity: AttachedCodewarsActivity): BaseAdapter() {
 
     var list: List<Member> = arrayListOf()
 
@@ -25,7 +26,7 @@ class LastSearchedMembersListAdapter: BaseAdapter() {
         val layoutInflater = LayoutInflater.from(p2.context)
         val view = layoutInflater.inflate(R.layout.item_last_searched_members_list, p2, false)
         var binding = ItemLastSearchedMembersListBinding.bind(view)
-        val lastSearchedMemberItemViewModel = LastSearchedMemberItemViewModel()
+        val lastSearchedMemberItemViewModel = LastSearchedMemberItemViewModel(attachedCodewarsActivity = attachedCodewarsActivity)
         lastSearchedMemberItemViewModel.setItem(list[p0])
         binding.viewModel = lastSearchedMemberItemViewModel
         notifyDataSetChanged()

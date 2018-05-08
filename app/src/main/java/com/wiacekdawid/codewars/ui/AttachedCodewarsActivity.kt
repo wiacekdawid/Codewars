@@ -5,5 +5,5 @@ package com.wiacekdawid.codewars.ui
  */
 
 interface AttachedCodewarsActivity {
-    fun openChallenges(memberId: String)
+    fun openChallenges(userName: String)
 }

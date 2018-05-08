@@ -22,7 +22,7 @@ import java.util.concurrent.Executors
 
 class ChallengesListViewModel(var username: String, val codewarsRepository: CodewarsRepository): ViewModel() {
     var completedChallenges: LiveData<PagedList<CompletedChallenge>>? = null
-    var isLoading: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    var isLoading: MutableLiveData<Boolean> = MutableLiveData()
     var noMoreData = false
     var lastLoadedPage = 0
     var boundaryCallback: CompletedChallengesBoundaryCallback? = null

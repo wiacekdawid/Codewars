@@ -14,9 +14,9 @@ import android.support.annotation.NonNull
         childColumns = arrayOf("userName"),
         onDelete = ForeignKey.CASCADE))], tableName = "completed_challenge_table")
 data class CompletedChallenge(
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey
         @NonNull
-        val id: Int = 0,
+        val id: String,
         val name: String?,
         val userName: String)
 

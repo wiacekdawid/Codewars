@@ -1,5 +1,6 @@
 package com.wiacekdawid.codewars.data.remote.api
 
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -7,4 +8,7 @@ import com.google.gson.annotations.SerializedName
  */
 
 data class RanksDto(@SerializedName("overall")
-                    var rank: RanksOverallDto?)
+                    var rank: RanksOverallDto?,
+                    @SerializedName("languages")
+                    @JsonAdapter(ProgrammingLanguagesDeserializer::class)
+                    var languages: List<ProgrammingLanguageWrapperDto>)

@@ -75,7 +75,7 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                     it.data?.forEach {
                         localDataSource
                                 .completedChallengeDao()
-                                .insert(CompletedChallenge(name = it.name, userName = userName))
+                                .insert(CompletedChallenge(id = it.id, name = it.name, userName = userName))
                     }
                 }
     }

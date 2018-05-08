@@ -55,13 +55,12 @@ class MembersListFragment: Fragment() {
 
     private fun setupList() {
         val listView = fragmentMembersListBinding?.fmlLvLastSearchedUsers
-        lastSearchedMembersListAdapter = LastSearchedMembersListAdapter()
+        lastSearchedMembersListAdapter = LastSearchedMembersListAdapter(attachedCodewarsActivity = (activity as AttachedCodewarsActivity))
         lastSearchedMembersListAdapter?.submitList(membersListViewModel.lastSearchedMembers?.value ?: arrayListOf())
         membersListViewModel.lastSearchedMembers.observe(this,
                 Observer<List<Member>> {
                     lastSearchedMembersListAdapter?.submitList(it ?: arrayListOf())
                 })
-
         listView?.adapter = lastSearchedMembersListAdapter
     }
 }

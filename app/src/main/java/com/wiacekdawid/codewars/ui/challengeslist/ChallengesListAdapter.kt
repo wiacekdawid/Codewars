@@ -27,7 +27,7 @@ class ChallengesListAdapter: PagedListAdapter<CompletedChallenge, ViewHolder>(di
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setItem(getItem(position))
+        getItem(position)?.let { holder.setItem(it) }
     }
 
     companion object {
@@ -45,7 +45,7 @@ class ViewHolder(view: View,
                  private val viewDataBinding: ViewDataBinding,
                  private val completedChallengeItemViewModel:
                  CompletedChallengeItemViewModel): RecyclerView.ViewHolder(viewDataBinding.root) {
-    internal fun setItem(completedChallage: CompletedChallenge?) {
+    internal fun setItem(completedChallage: CompletedChallenge) {
         completedChallengeItemViewModel.setItem(completedChallage)
         viewDataBinding.executePendingBindings()
     }

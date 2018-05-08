@@ -3,6 +3,7 @@ package com.wiacekdawid.codewars.data.remote
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengeDto
 import com.wiacekdawid.codewars.data.remote.api.CodewarsService
+import com.wiacekdawid.codewars.data.remote.api.ProgrammingLanguageWrapperDto
 import com.wiacekdawid.codewars.data.remote.api.ResponsePaginatedDto
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -31,9 +32,22 @@ class RemoteDataSource(private val codewarsService: CodewarsService) {
                         member.name = it.name
                         member.rank = it.ranks?.rank?.rank ?: Member.DEFAULT_RANK
                         member.lastSearchTime = System.currentTimeMillis()
+                        member.bestLanguage = getBestLanguge(it.ranks?.languages)
                     }
                     member
                 }
+    }
+
+    private fun getBestLanguge(list: List<ProgrammingLanguageWrapperDto>?): String? {
+        var bestLanguage: String? = null
+        var maxRank = Integer.MIN_VALUE
+        list?.forEach{
+            if(it.rank > maxRank) {
+                bestLanguage = it.name + " " + it.score
+            }
+        }
+
+        return bestLanguage
     }
 
     fun getCompletedChallenges(username: String, page: Int): Single<ResponsePaginatedDto> {

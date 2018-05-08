@@ -55,7 +55,7 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                         .subscribe({
                             member: Member? ->
                             member?.let {
-                                if(member.userName.equals(Member.DEFAULT_USER_NAME)) {
+                                if(member.userName == Member.DEFAULT_USER_NAME) {
                                     noFoundMemberMsgVisibility.postValue(true)
                                 }
                                 else {

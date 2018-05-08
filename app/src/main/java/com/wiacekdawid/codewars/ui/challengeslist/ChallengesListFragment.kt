@@ -53,6 +53,7 @@ class ChallengesListFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         linearLayoutManager = LinearLayoutManager(activity)
         fragmentChallengesListBinding = FragmentChallengesListBinding.inflate(inflater, container, false)
+        fragmentChallengesListBinding?.setLifecycleOwner(this)
         fragmentChallengesListBinding?.viewModel = challengesListViewModel
         setupRecyclerView()
         return fragmentChallengesListBinding?.root
