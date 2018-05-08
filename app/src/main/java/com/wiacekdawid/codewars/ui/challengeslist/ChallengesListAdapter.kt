@@ -15,15 +15,15 @@ import com.wiacekdawid.codewars.databinding.ItemChallengesListBinding
  * Created by dawidwiacek on 01/05/2018.
  */
 
-class ChallengesListAdapter: PagedListAdapter<CompletedChallenge, ViewHolder>(diffCallback) {
+class ChallengesListAdapter: PagedListAdapter<Challenge, ViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.item_challenges_list, parent, false)
         val binding = ItemChallengesListBinding.bind(view)
-        val completedChallengeItemViewModel = CompletedChallengeItemViewModel()
-        binding.viewModel = completedChallengeItemViewModel
-        return ViewHolder(view, binding, completedChallengeItemViewModel)
+        val challengeItemViewModel = ChallengeItemViewModel()
+        binding.challengeItemViewModel = challengeItemViewModel
+        return ViewHolder(view, binding, challengeItemViewModel)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -31,11 +31,11 @@ class ChallengesListAdapter: PagedListAdapter<CompletedChallenge, ViewHolder>(di
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<CompletedChallenge>() {
-            override fun areItemsTheSame(oldItem: CompletedChallenge, newItem: CompletedChallenge): Boolean =
+        private val diffCallback = object : DiffUtil.ItemCallback<Challenge>() {
+            override fun areItemsTheSame(oldItem: Challenge, newItem: Challenge): Boolean =
                     oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: CompletedChallenge, newItem: CompletedChallenge): Boolean =
+            override fun areContentsTheSame(oldItem: Challenge, newItem: Challenge): Boolean =
                     oldItem == newItem
         }
     }
@@ -44,9 +44,9 @@ class ChallengesListAdapter: PagedListAdapter<CompletedChallenge, ViewHolder>(di
 class ViewHolder(view: View,
                  private val viewDataBinding: ViewDataBinding,
                  private val completedChallengeItemViewModel:
-                 CompletedChallengeItemViewModel): RecyclerView.ViewHolder(viewDataBinding.root) {
-    internal fun setItem(completedChallage: CompletedChallenge) {
-        completedChallengeItemViewModel.setItem(completedChallage)
+                 ChallengeItemViewModel): RecyclerView.ViewHolder(viewDataBinding.root) {
+    internal fun setItem(challage: Challenge) {
+        completedChallengeItemViewModel.setItem(challage)
         viewDataBinding.executePendingBindings()
     }
 }

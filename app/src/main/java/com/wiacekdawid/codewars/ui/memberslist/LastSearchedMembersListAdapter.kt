@@ -28,7 +28,7 @@ class LastSearchedMembersListAdapter(val attachedCodewarsActivity: AttachedCodew
         var binding = ItemLastSearchedMembersListBinding.bind(view)
         val lastSearchedMemberItemViewModel = LastSearchedMemberItemViewModel(attachedCodewarsActivity = attachedCodewarsActivity)
         lastSearchedMemberItemViewModel.setItem(list[p0])
-        binding.viewModel = lastSearchedMemberItemViewModel
+        binding.lastSearchedMemberItemViewModel = lastSearchedMemberItemViewModel
         notifyDataSetChanged()
         return binding.root
     }

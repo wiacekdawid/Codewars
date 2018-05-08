@@ -37,7 +37,7 @@ class MembersListFragment: Fragment() {
         setHasOptionsMenu(true)
         membersListViewModel = ViewModelProviders.of(this, membersListViewModelFactory).get(MembersListViewModel::class.java)
         membersListViewModel.refreshLastSearchedMembersSortedByDate()
-        membersListViewModel.selectMember.observe(this, observer = Observer() {
+        membersListViewModel.selectMember.observe(this, observer = Observer {
             it?.let { (activity as AttachedCodewarsActivity).openChallenges(it)}
         })
     }

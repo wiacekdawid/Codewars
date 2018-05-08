@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/clbnm_i_completed"
         android:title="@string/clbnm_completed"
+        android:icon="@drawable/ic_looks_one_white_24px"
         app:showAsAction="ifRoom" />
     <item android:id="@+id/clbnm_i_authored"
         android:title="@string/clbnm_authored"
+        android:icon="@drawable/ic_looks_two_white_24px"
         app:showAsAction="ifRoom" />
 </menu>

@@ -2,16 +2,17 @@ package com.wiacekdawid.codewars.data.repository
 
 import android.arch.paging.DataSource
 import android.net.ConnectivityManager
+import com.wiacekdawid.codewars.data.local.AuthoredChallenge
 import com.wiacekdawid.codewars.data.local.CompletedChallenge
 import com.wiacekdawid.codewars.data.local.LocalDataSource
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
-import com.wiacekdawid.codewars.data.remote.api.ResponsePaginatedDto
+import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengeDto
+import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengesResponseDto
+import com.wiacekdawid.codewars.data.remote.api.CompletedChallengesResponseDto
 import io.reactivex.Completable
 import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 
 
 /**
@@ -64,7 +65,23 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
         return localDataSource.completedChallengeDao().getAllCompletedChallengesForMember(username)
     }
 
-    fun loadMoreCompletedChallenges(userName: String): Single<ResponsePaginatedDto> {
+    fun getAuthoredChallenges(username: String): DataSource.Factory<Int, AuthoredChallenge> {
+        return localDataSource.authoredChallengeDao().getAllAuthoredChallengesForMember(username)
+    }
+
+    fun refreshAuthoredChallenges(userName: String): Single<AuthoredChallengesResponseDto> {
+        return remoteDataSource
+                .getAuthoredChallenges(userName)
+                .doOnSuccess {
+                    it.data?.forEach {
+                        localDataSource
+                                .authoredChallengeDao()
+                                .insert(AuthoredChallenge(uid = it.id, name = it.name, userName = userName))
+                    }
+                }
+    }
+
+    fun loadMoreCompletedChallenges(userName: String): Single<CompletedChallengesResponseDto> {
         return remoteDataSource
                 .getCompletedChallenges(userName, currentPage)
                 .doOnSuccess {

@@ -50,6 +50,8 @@ class CodewarsActivity: AppCompatActivity(), AttachedCodewarsActivity, HasSuppor
         bundle.putString(ChallengesListFragment.MEMBER_ID, memberId)
         challengesListFragment.arguments = bundle
         supportFragmentManager.beginTransaction()
-                .replace(R.id.ac_fl_container, challengesListFragment).commit()
+                .add(R.id.ac_fl_container, challengesListFragment)
+                .addToBackStack(ChallengesListFragment::class.java.name)
+                .commit()
     }
 }

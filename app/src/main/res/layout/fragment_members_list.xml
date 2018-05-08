@@ -25,8 +25,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_default="wrap"
-            app:layout_constraintHeight_default="wrap" />
+            app:layout_constrainedWidth="true"
+            app:layout_constrainedHeight="true" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/fml_til_search"
@@ -35,8 +35,8 @@
             app:layout_constraintTop_toBottomOf="@+id/fml_lv_last_searched_users"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_default="wrap"
-            app:layout_constraintHeight_default="wrap"
+            app:layout_constrainedWidth="true"
+            app:layout_constrainedHeight="true"
             android:padding="16dp">
 
             <EditText
@@ -54,12 +54,12 @@
             android:id="@+id/fm_clpb_loader"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/fml_til_search"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_default="wrap"
-            app:layout_constraintHeight_default="wrap"
+            app:layout_constrainedWidth="true"
+            app:layout_constrainedHeight="true"
             android:padding="16dp"
             android:visibility="@{viewmodel.loading}"
             android:indeterminate="true" />
@@ -67,14 +67,14 @@
         <Button
             android:id="@+id/fml_b_search"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:padding="16dp"
             style="@style/BodyText"
             app:layout_constraintTop_toBottomOf="@+id/fm_clpb_loader"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_default="wrap"
-            app:layout_constraintHeight_default="wrap"
+            app:layout_constrainedWidth="true"
+            app:layout_constrainedHeight="true"
             android:onClick="@{() -> viewmodel.searchMember()}"
             android:text="@string/fml_search" />
 
@@ -87,8 +87,8 @@
             app:layout_constraintTop_toBottomOf="@+id/fml_b_search"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_default="wrap"
-            app:layout_constraintHeight_default="wrap"
+            app:layout_constrainedWidth="true"
+            app:layout_constrainedHeight="true"
             android:text="@{viewmodel.foundedMember}"
             android:visibility="@{viewmodel.foundedMember}"
             android:onClick="@{() -> viewmodel.clickOnMember()}" />
@@ -103,8 +103,8 @@
             app:layout_constraintTop_toBottomOf="@+id/fml_b_search"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_default="wrap"
-            app:layout_constraintHeight_default="wrap"
+            app:layout_constrainedWidth="true"
+            app:layout_constrainedHeight="true"
             android:text="@string/fml_error_msg_during_searching" />
 
         <TextView
@@ -117,8 +117,8 @@
             app:layout_constraintTop_toBottomOf="@+id/fml_b_search"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_default="wrap"
-            app:layout_constraintHeight_default="wrap"
+            app:layout_constrainedWidth="true"
+            app:layout_constrainedHeight="true"
             android:text="@string/fml_no_search_result" />
 
     </android.support.constraint.ConstraintLayout>

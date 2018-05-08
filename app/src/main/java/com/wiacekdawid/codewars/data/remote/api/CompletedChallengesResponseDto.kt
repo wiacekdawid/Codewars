@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
  * Created by dawidwiacek on 02/05/2018.
  */
 
-data class ResponsePaginatedDto(@SerializedName("data")
+data class CompletedChallengesResponseDto(@SerializedName("data")
                     var data: List<CompletedChallengeDto>)

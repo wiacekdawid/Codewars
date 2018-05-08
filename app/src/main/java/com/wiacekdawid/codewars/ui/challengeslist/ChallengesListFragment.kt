@@ -10,13 +10,10 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.style.TtsSpan
 import android.view.*
-import com.wiacekdawid.codewars.data.local.CompletedChallenge
 import com.wiacekdawid.codewars.databinding.FragmentChallengesListBinding
+import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
 import dagger.android.support.AndroidSupportInjection
-import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -47,6 +44,12 @@ class ChallengesListFragment: Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(false)
         challengesListViewModel = ViewModelProviders.of(this, challengesListViewModelFactory).get(ChallengesListViewModel::class.java)
+        challengesListViewModel.refreshList.observe(this, observer = Observer {
+            challengesListViewModel.challenges?.observe(this,
+                    Observer<PagedList<Challenge>> {
+                        challengesListAdapter?.submitList(it)
+                    })
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,8 +69,8 @@ class ChallengesListFragment: Fragment() {
     private fun setupRecyclerView() {
         val recyclerView = fragmentChallengesListBinding?.fclRvChallenges
         challengesListAdapter = ChallengesListAdapter()
-        challengesListViewModel.completedChallenges?.observe(this,
-                Observer<PagedList<CompletedChallenge>> {
+        challengesListViewModel.challenges?.observe(this,
+                Observer<PagedList<Challenge>> {
                     challengesListAdapter?.submitList(it)
                 })
 

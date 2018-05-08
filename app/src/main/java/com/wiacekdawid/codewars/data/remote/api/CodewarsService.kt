@@ -15,8 +15,8 @@ interface CodewarsService {
 
     @GET(CodewarsApiContract.COMPLETED_CHALLENGES_ENDPOINT)
     fun getCompletedChallenges(@Path(CodewarsApiContract.USERNAME_PARAM) username: String,
-                               @Query(CodewarsApiContract.PAGE_PARAM) page: Int): Single<ResponsePaginatedDto>
+                               @Query(CodewarsApiContract.PAGE_PARAM) page: Int): Single<CompletedChallengesResponseDto>
 
     @GET(CodewarsApiContract.AUTHORED_CHALLENGES_ENDPOINT)
-    fun getAuthoredChallenges(@Path(CodewarsApiContract.USERNAME_PARAM) username: String): Single<List<AuthoredChallengeDto>>
+    fun getAuthoredChallenges(@Path(CodewarsApiContract.USERNAME_PARAM) username: String): Single<AuthoredChallengesResponseDto>
 }

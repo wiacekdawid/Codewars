@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="viewModel"
+            name="lastSearchedMemberItemViewModel"
             type="com.wiacekdawid.codewars.ui.memberslist.LastSearchedMemberItemViewModel" />
     </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> viewModel.onItemClick()}"
+        android:onClick="@{() -> lastSearchedMemberItemViewModel.onItemClick()}"
         style="@style/Background">
 
         <TextView
@@ -24,7 +24,7 @@
             app:layout_constraintHeight_default="wrap"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/ilsml_tv_rank"
-            android:text="@{viewModel.userName}"/>
+            android:text="@{lastSearchedMemberItemViewModel.userName}"/>
 
         <TextView
             android:id="@+id/ilsml_tv_rank"
@@ -37,7 +37,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/ilsml_tv_user_name"
             app:layout_constraintRight_toLeftOf="@+id/ilsml_tv_best_language_and_score"
-            android:text="@{@string/fml_rank(viewModel.rank)}"/>
+            android:text="@{@string/fml_rank(lastSearchedMemberItemViewModel.rank)}"/>
 
         <TextView
             android:id="@+id/ilsml_tv_best_language_and_score"
@@ -50,7 +50,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/ilsml_tv_rank"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@{@string/fml_best_language(viewModel.bestLanguageAndScore)}" />
+            android:text="@{lastSearchedMemberItemViewModel.bestLanguageAndScore}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

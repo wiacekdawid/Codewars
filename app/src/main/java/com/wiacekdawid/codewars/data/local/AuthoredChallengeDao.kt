@@ -1,5 +1,6 @@
 package com.wiacekdawid.codewars.data.local
 
+import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
@@ -17,6 +18,6 @@ interface AuthoredChallengeDao {
     @Query("DELETE FROM authored_challenge_table")
     fun deleteAll()
 
-    @Query("SELECT * from authored_challenge_table ORDER BY uid ASC")
-    fun getAllAuthoredChallenges(): List<AuthoredChallenge>
+    @Query("SELECT * from authored_challenge_table WHERE userName=:userName ORDER BY uid ASC")
+    fun getAllAuthoredChallengesForMember(userName: String): DataSource.Factory<Int, AuthoredChallenge>
 }

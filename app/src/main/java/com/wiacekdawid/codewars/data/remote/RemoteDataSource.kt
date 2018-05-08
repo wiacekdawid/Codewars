@@ -1,12 +1,10 @@
 package com.wiacekdawid.codewars.data.remote
 
 import com.wiacekdawid.codewars.data.local.Member
-import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengeDto
+import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengesResponseDto
 import com.wiacekdawid.codewars.data.remote.api.CodewarsService
+import com.wiacekdawid.codewars.data.remote.api.CompletedChallengesResponseDto
 import com.wiacekdawid.codewars.data.remote.api.ProgrammingLanguageWrapperDto
-import com.wiacekdawid.codewars.data.remote.api.ResponsePaginatedDto
-import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
 
@@ -50,11 +48,11 @@ class RemoteDataSource(private val codewarsService: CodewarsService) {
         return bestLanguage
     }
 
-    fun getCompletedChallenges(username: String, page: Int): Single<ResponsePaginatedDto> {
+    fun getCompletedChallenges(username: String, page: Int): Single<CompletedChallengesResponseDto> {
         return codewarsService.getCompletedChallenges(username, page)
     }
 
-    fun getAuthoredChallenges(username: String): Single<List<AuthoredChallengeDto>> {
+    fun getAuthoredChallenges(username: String): Single<AuthoredChallengesResponseDto> {
         return codewarsService.getAuthoredChallenges(username)
     }
 }

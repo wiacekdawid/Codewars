@@ -11,11 +11,10 @@ import timber.log.Timber
  * Created by dawidwiacek on 01/05/2018.
  */
 
-class CompletedChallengesBoundaryCallback(val codewarsRepository: CodewarsRepository,
-                                          val challengesListViewModel: ChallengesListViewModel):
-        PagedList.BoundaryCallback<CompletedChallenge>() {
+class ChallengesBoundaryCallback(val challengesListViewModel: ChallengesListViewModel):
+        PagedList.BoundaryCallback<Challenge>() {
 
-    override fun onItemAtEndLoaded(itemAtEnd: CompletedChallenge) {
+    override fun onItemAtEndLoaded(itemAtEnd: Challenge) {
         challengesListViewModel.onRefresh(false)
     }
 
