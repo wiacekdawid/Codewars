@@ -2,18 +2,14 @@ package com.wiacekdawid.codewars.ui.memberslist
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.arch.paging.PagedList
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.wiacekdawid.codewars.data.local.CompletedChallenge
+import android.view.*
+import com.wiacekdawid.codewars.R
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.databinding.FragmentMembersListBinding
 import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
-import com.wiacekdawid.codewars.ui.challengeslist.ChallengesListAdapter
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -38,8 +34,9 @@ class MembersListFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         membersListViewModel = ViewModelProviders.of(this, membersListViewModelFactory).get(MembersListViewModel::class.java)
-        membersListViewModel.refreshLastSearchedMembers()
+        membersListViewModel.refreshLastSearchedMembersSortedByDate()
         membersListViewModel.selectMember.observe(this, observer = Observer() {
             it?.let { (activity as AttachedCodewarsActivity).openChallenges(it)}
         })
@@ -51,6 +48,20 @@ class MembersListFragment: Fragment() {
         fragmentMembersListBinding?.setLifecycleOwner(this)
         setupList()
         return fragmentMembersListBinding?.root
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            R.id.msm_i_sort_by_date -> {
+                membersListViewModel.refreshLastSearchedMembersSortedByDate()
+                return true
+            }
+            R.id.msm_i_sort_by_rank -> {
+                membersListViewModel.refreshLastSearchedMembersSortedByRank()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupList() {

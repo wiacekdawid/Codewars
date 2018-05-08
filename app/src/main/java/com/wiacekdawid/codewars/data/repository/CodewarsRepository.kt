@@ -29,7 +29,9 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
         currentPage = 0
     }
 
-    fun getLastSearchedMembers(): Maybe<List<Member>> = localDataSource.membersDao().getAllMembersSortedByLastSearchedTime()
+    fun getLastSearchedMembersSortedByDate(): Maybe<List<Member>> = localDataSource.membersDao().getAllMembersSortedByLastSearchedTime()
+
+    fun getLastSearchedMembersSortedByRank(): Maybe<List<Member>> = localDataSource.membersDao().getAllMembersSortedByRank()
 
     fun getMember(searchText: String): Single<Member> {
 

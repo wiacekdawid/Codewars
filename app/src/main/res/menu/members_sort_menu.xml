@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/msm_i_sort"
+        android:title="@string/fml_sort"
+        app:showAsAction="always">
+        <menu>
+            <item android:id="@+id/msm_i_sort_by_date"
+                android:title="@string/fml_sort_by_date"
+                app:showAsAction="collapseActionView" />
+            <item android:id="@+id/msm_i_sort_by_rank"
+                android:title="@string/fml_sort_by_rank"
+                app:showAsAction="collapseActionView" />
+        </menu>
+    </item>
+</menu>

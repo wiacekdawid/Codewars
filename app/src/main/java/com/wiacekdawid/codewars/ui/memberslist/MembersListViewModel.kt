@@ -25,8 +25,25 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
 
     var searchText: MutableLiveData<String> = MutableLiveData()
 
-    fun refreshLastSearchedMembers() {
-        codewarsRepository.getLastSearchedMembers()
+    fun refreshLastSearchedMembersSortedByDate() {
+        codewarsRepository.getLastSearchedMembersSortedByDate()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    lastSearchedMembers.postValue(it.take(5))
+                    lastSearchedMembersVisibility.postValue(true)
+                }, {
+                    Timber.e(it)
+                    lastSearchedMembersVisibility.postValue(false)
+                    lastSearchedMembers.postValue(listOf())
+                },{
+                    lastSearchedMembersVisibility.postValue(false)
+                    lastSearchedMembers.postValue(listOf())
+                })
+    }
+
+    fun refreshLastSearchedMembersSortedByRank() {
+        codewarsRepository.getLastSearchedMembersSortedByRank()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

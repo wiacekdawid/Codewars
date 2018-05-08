@@ -3,6 +3,7 @@ package com.wiacekdawid.codewars.ui
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import com.wiacekdawid.codewars.R
 import com.wiacekdawid.codewars.ui.challengeslist.ChallengesListFragment
 import com.wiacekdawid.codewars.ui.memberslist.MembersListFragment
@@ -11,6 +12,9 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
+import android.view.MenuInflater
+
+
 
 /**
  * Created by dawidwiacek on 28/04/2018.
@@ -31,6 +35,11 @@ class CodewarsActivity: AppCompatActivity(), AttachedCodewarsActivity, HasSuppor
 
         supportFragmentManager.beginTransaction()
                 .add(R.id.ac_fl_container, MembersListFragment()).commit()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.members_sort_menu, menu)
+        return true
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
