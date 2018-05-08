@@ -39,7 +39,7 @@
             app:layout_constrainedHeight="true"
             android:padding="16dp">
 
-            <EditText
+            <com.wiacekdawid.codewars.util.EditTextWithClear
                 android:id="@+id/username"
                 style="@style/BodyText"
                 android:layout_width="match_parent"
