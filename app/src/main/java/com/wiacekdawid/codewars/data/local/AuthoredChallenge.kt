@@ -16,6 +16,6 @@ import android.support.annotation.NonNull
 data class AuthoredChallenge(
         @PrimaryKey
         @NonNull
-        val uid: String,
+        val id: String,
         val name: String?,
         val userName: String)

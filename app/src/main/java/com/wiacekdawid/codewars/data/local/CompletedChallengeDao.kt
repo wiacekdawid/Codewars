@@ -13,7 +13,7 @@ import io.reactivex.Single
 
 @Dao
 interface CompletedChallengeDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ROLLBACK)
     fun insert(completedChallage: CompletedChallenge)
 
     @Query("DELETE FROM completed_challenge_table")
@@ -22,6 +22,6 @@ interface CompletedChallengeDao {
     @Query("SELECT * from completed_challenge_table WHERE userName=:userName ORDER BY id ASC")
     fun getAllCompletedChallengesForMember(userName: String): DataSource.Factory<Int, CompletedChallenge>
 
-    @Query("SELECT COUNT(*) from completed_challenge_table WHERE userName=:userName")
-    fun countCompletedChallengesForMember(userName: String): Single<Int>
+    @Query("SELECT * from completed_challenge_table WHERE id=:id")
+    fun getCompletedChallengesForId(id: String): Single<CompletedChallenge>
 }

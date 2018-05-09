@@ -8,20 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wiacekdawid.codewars.R
-import com.wiacekdawid.codewars.data.local.CompletedChallenge
 import com.wiacekdawid.codewars.databinding.ItemChallengesListBinding
+import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
 
 /**
  * Created by dawidwiacek on 01/05/2018.
  */
 
-class ChallengesListAdapter: PagedListAdapter<Challenge, ViewHolder>(diffCallback) {
+class ChallengesListAdapter(val attachedCodewarsActivity: AttachedCodewarsActivity): PagedListAdapter<Challenge, ViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.item_challenges_list, parent, false)
         val binding = ItemChallengesListBinding.bind(view)
-        val challengeItemViewModel = ChallengeItemViewModel()
+        val challengeItemViewModel = ChallengeItemViewModel(attachedCodewarsActivity = attachedCodewarsActivity)
         binding.challengeItemViewModel = challengeItemViewModel
         return ViewHolder(view, binding, challengeItemViewModel)
     }

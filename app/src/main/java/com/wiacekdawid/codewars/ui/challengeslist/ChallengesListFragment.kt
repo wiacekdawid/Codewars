@@ -70,7 +70,7 @@ class ChallengesListFragment: Fragment() {
 
     private fun setupRecyclerView() {
         val recyclerView = fragmentChallengesListBinding?.fclRvChallenges
-        challengesListAdapter = ChallengesListAdapter()
+        challengesListAdapter = ChallengesListAdapter(activity as AttachedCodewarsActivity)
         challengesListViewModel.challenges?.observe(this,
                 Observer<PagedList<Challenge>> {
                     challengesListAdapter?.submitList(it)

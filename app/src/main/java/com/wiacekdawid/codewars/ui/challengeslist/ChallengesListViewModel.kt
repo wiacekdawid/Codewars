@@ -31,7 +31,8 @@ class ChallengesListViewModel(var username: String, val codewarsRepository: Code
     init {
         boundaryCallback = ChallengesBoundaryCallback(this)
         challenges = LivePagedListBuilder<Int, Challenge>(codewarsRepository
-                        .getCompletedChallenges(username).map { Challenge(id = it.id, name = it.name ?: "", userName = it.userName) }, 20)
+                        .getCompletedChallenges(username).map {
+                        Challenge(id = it.id, name = it.name ?: "", userName = it.userName, isCompleted = true) }, 20)
                         .setBoundaryCallback(boundaryCallback)
                         .setFetchExecutor(BackgroundThreadExecutor())
                         .build()
@@ -82,7 +83,8 @@ class ChallengesListViewModel(var username: String, val codewarsRepository: Code
             R.id.clbnm_i_authored -> {
                 loadCompletedChallenges = false
                 challenges = LivePagedListBuilder<Int, Challenge>(codewarsRepository
-                                .getAuthoredChallenges(username).map { Challenge(id = it.uid, name = it.name ?: "", userName = it.userName) }, 20)
+                                .getAuthoredChallenges(username).map {
+                                Challenge(id = it.id, name = it.name ?: "", userName = it.userName, isCompleted = true) }, 20)
                                 .setBoundaryCallback(boundaryCallback)
                                 .setFetchExecutor(BackgroundThreadExecutor())
                                 .build()
@@ -94,7 +96,8 @@ class ChallengesListViewModel(var username: String, val codewarsRepository: Code
                 loadCompletedChallenges = true
                 challenges =
                         LivePagedListBuilder<Int, Challenge>(codewarsRepository
-                                .getCompletedChallenges(username).map { Challenge(id = it.id, name = it.name ?: "", userName = it.userName) }, 20)
+                                .getCompletedChallenges(username).map {
+                                Challenge(id = it.id, name = it.name ?: "", userName = it.userName, isCompleted = false) }, 20)
                                 .setBoundaryCallback(boundaryCallback)
                                 .setFetchExecutor(BackgroundThreadExecutor())
                                 .build()

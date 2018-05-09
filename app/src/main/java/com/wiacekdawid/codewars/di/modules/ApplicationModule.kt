@@ -29,11 +29,6 @@ class ApplicationModule {
     @Provides
     internal fun provideRemoteDataSource(codewarsService: CodewarsService) = RemoteDataSource(codewarsService)
 
-   /*@ApplicationScope
-    @Provides
-    internal fun provideLocalDataSource(codewarsApplication: CodewarsApplication): LocalDataSource =*/
-
-
     @ApplicationScope
     @Provides
     internal fun provideCodewarsRepository(codewarsApplication: CodewarsApplication,

@@ -13,7 +13,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 import android.view.MenuInflater
-
+import com.wiacekdawid.codewars.ui.challengedetails.ChallengeDetailsFragment
 
 
 /**
@@ -47,6 +47,19 @@ class CodewarsActivity: AppCompatActivity(), AttachedCodewarsActivity, HasSuppor
         supportFragmentManager.beginTransaction()
                 .add(R.id.ac_fl_container, challengesListFragment)
                 .addToBackStack(ChallengesListFragment::class.java.name)
+                .commit()
+    }
+
+    override fun openChallengeDetails(userName: String, challengeId: String, isCompletedChallenge: Boolean) {
+        val challengeDetailsFragment = ChallengeDetailsFragment()
+        var bundle = Bundle()
+        bundle.putString(ChallengeDetailsFragment.USER_NAME, userName)
+        bundle.putString(ChallengeDetailsFragment.CHALLENGE_ID, challengeId)
+        bundle.putBoolean(ChallengeDetailsFragment.COMPLETED_CHALLENGE, isCompletedChallenge)
+        challengeDetailsFragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+                .add(R.id.ac_fl_container, challengeDetailsFragment)
+                .addToBackStack(ChallengeDetailsFragment::class.java.name)
                 .commit()
     }
 }

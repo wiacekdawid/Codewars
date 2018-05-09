@@ -7,7 +7,6 @@ import com.wiacekdawid.codewars.data.local.CompletedChallenge
 import com.wiacekdawid.codewars.data.local.LocalDataSource
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
-import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengeDto
 import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengesResponseDto
 import com.wiacekdawid.codewars.data.remote.api.CompletedChallengesResponseDto
 import io.reactivex.Completable
@@ -76,7 +75,7 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                     it.data?.forEach {
                         localDataSource
                                 .authoredChallengeDao()
-                                .insert(AuthoredChallenge(uid = it.id, name = it.name, userName = userName))
+                                .insert(AuthoredChallenge(id = it.id, name = it.name, userName = userName))
                     }
                 }
     }
@@ -106,4 +105,11 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
             }
         })
     }
+
+    fun getCompletedChallenge(id: String): Single<CompletedChallenge> =
+            localDataSource.completedChallengeDao().getCompletedChallengesForId(id)
+
+    fun getAuthoredChallenge(id: String): Single<AuthoredChallenge> =
+            localDataSource.authoredChallengeDao().getAuthoredChallengeForId(id)
+
 }

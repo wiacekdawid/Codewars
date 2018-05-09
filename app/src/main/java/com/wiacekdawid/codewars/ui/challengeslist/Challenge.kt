@@ -6,4 +6,5 @@ package com.wiacekdawid.codewars.ui.challengeslist
 
 data class Challenge(val id: String,
                      val name: String,
-                     val userName: String)
+                     val userName: String,
+                     val isCompleted: Boolean = true)
