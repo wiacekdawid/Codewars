@@ -6,6 +6,7 @@ import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
 import com.wiacekdawid.codewars.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.internal.schedulers.ScheduledDirectPeriodicTask
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -15,6 +16,9 @@ import timber.log.Timber
  */
 
 class MembersListViewModel(private val codewarsRepository: CodewarsRepository): ViewModel() {
+
+    private var compositeDisposable = CompositeDisposable()
+
     var errorMsgVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var noFoundMemberMsgVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var foundedMember: MutableLiveData<String> = MutableLiveData()
@@ -22,11 +26,14 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
     var lastSearchedMembers: MutableLiveData<List<Member>> = MutableLiveData()
     var lastSearchedMembersVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var selectMember = SingleLiveEvent<String>()
-
     var searchText: MutableLiveData<String> = MutableLiveData()
 
+    override fun onCleared() {
+        compositeDisposable.clear()
+    }
+
     fun refreshLastSearchedMembersSortedByDate() {
-        codewarsRepository.getLastSearchedMembersSortedByDate()
+        compositeDisposable.add(codewarsRepository.getLastSearchedMembersSortedByDate()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -40,10 +47,11 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                     lastSearchedMembersVisibility.postValue(false)
                     lastSearchedMembers.postValue(listOf())
                 })
+        )
     }
 
     fun refreshLastSearchedMembersSortedByRank() {
-        codewarsRepository.getLastSearchedMembersSortedByRank()
+        compositeDisposable.add(codewarsRepository.getLastSearchedMembersSortedByRank()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -57,6 +65,7 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                     lastSearchedMembersVisibility.postValue(false)
                     lastSearchedMembers.postValue(listOf())
                 })
+        )
     }
 
     fun searchMember() {
@@ -66,7 +75,7 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                 foundedMember.postValue("")
                 errorMsgVisibility.postValue(false)
                 noFoundMemberMsgVisibility.postValue(false)
-                codewarsRepository.getMember(searchText = it)
+                compositeDisposable.add(codewarsRepository.getMember(searchText = it)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
@@ -86,6 +95,7 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                             Timber.e(throwable)
                             loading.postValue(false)
                         })
+                )
             }
         }
     }

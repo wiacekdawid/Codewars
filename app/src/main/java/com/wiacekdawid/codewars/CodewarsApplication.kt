@@ -28,20 +28,19 @@ class CodewarsApplication : MultiDexApplication(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-        Stetho.initializeWithDefaults(this)
+        initStetho()
         initDI()
         initLogger()
     }
 
-    private fun initDI() {
-        DaggerApplicationComponent
+    private fun initStetho() = Stetho.initializeWithDefaults(this)
+
+    private fun initDI() = DaggerApplicationComponent
                 .builder()
                 .codewarsApplication(this)
                 .build()
                 .inject(this)
-    }
 
-    private fun initLogger() {
-        Timber.plant(Timber.DebugTree())
-    }
+    private fun initLogger() = Timber.plant(Timber.DebugTree())
+
 }

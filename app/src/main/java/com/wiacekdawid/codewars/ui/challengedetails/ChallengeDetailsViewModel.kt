@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
@@ -15,9 +16,16 @@ class ChallengeDetailsViewModel(var username: String,
                                 var challengeId: String,
                                 var isCompletedChallenge: Boolean,
                                 val codewarsRepository: CodewarsRepository): ViewModel() {
+
+    private var compositeDisposable = CompositeDisposable()
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+    }
+
     fun loadData() {
         if(isCompletedChallenge) {
-            codewarsRepository.getCompletedChallenge(challengeId)
+            compositeDisposable.add(codewarsRepository.getCompletedChallenge(challengeId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -29,9 +37,10 @@ class ChallengeDetailsViewModel(var username: String,
                             {
                                 Timber.e(it)
                             })
+            )
         }
         else {
-            codewarsRepository.getAuthoredChallenge(challengeId)
+            compositeDisposable.add(codewarsRepository.getAuthoredChallenge(challengeId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -43,6 +52,7 @@ class ChallengeDetailsViewModel(var username: String,
                             {
                                 Timber.e(it)
                             })
+            )
         }
     }
     var userName: MutableLiveData<String> = MutableLiveData()
