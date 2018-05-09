@@ -13,7 +13,7 @@ import io.reactivex.Single
 
 @Dao
 interface CompletedChallengeDao {
-    @Insert(onConflict = OnConflictStrategy.ROLLBACK)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(completedChallage: CompletedChallenge)
 
     @Query("DELETE FROM completed_challenge_table")

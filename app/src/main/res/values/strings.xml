@@ -11,6 +11,7 @@
     <string name="fml_sort">Sort</string>
     <string name="fml_sort_by_date">Sort by date</string>
     <string name="fml_sort_by_rank">Sort by rank</string>
+    <string name="fml_found_member">Found member: %s</string>
 
     <!-- Challenges list bottom nav menu -->
     <string name="clbnm_completed">Completed</string>

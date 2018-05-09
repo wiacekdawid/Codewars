@@ -89,7 +89,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constrainedWidth="true"
             app:layout_constrainedHeight="true"
-            android:text="@{viewmodel.foundedMember}"
+            android:text="@{@string/fml_found_member(viewmodel.foundedMember)}"
             android:visibility="@{viewmodel.foundedMember}"
             android:onClick="@{() -> viewmodel.clickOnMember()}" />
 

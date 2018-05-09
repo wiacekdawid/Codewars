@@ -98,14 +98,6 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                 }
     }
 
-    fun addCompletedChallengesToDB(challenges: List<CompletedChallenge>): Completable {
-        return Completable.fromRunnable({
-            for(completedChallenge in challenges) {
-                localDataSource.completedChallengeDao().insert(completedChallenge)
-            }
-        })
-    }
-
     fun getCompletedChallenge(id: String): Single<CompletedChallenge> =
             localDataSource.completedChallengeDao().getCompletedChallengesForId(id)
 

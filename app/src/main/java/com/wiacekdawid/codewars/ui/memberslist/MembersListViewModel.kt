@@ -9,6 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.internal.schedulers.ScheduledDirectPeriodicTask
 import io.reactivex.schedulers.Schedulers
+import retrofit2.HttpException
 import timber.log.Timber
 
 /**
@@ -78,6 +79,11 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                 compositeDisposable.add(codewarsRepository.getMember(searchText = it)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError {
+                            if((it as? HttpException)?.code() == 404) {
+                                noFoundMemberMsgVisibility.postValue(true)
+                            }
+                        }
                         .subscribe({
                             member: Member? ->
                             member?.let {
