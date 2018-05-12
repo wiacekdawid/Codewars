@@ -1,12 +1,14 @@
 package com.wiacekdawid.codewars.data.remote
 
+import com.wiacekdawid.codewars.data.local.AuthoredChallenge
 import com.wiacekdawid.codewars.data.local.Member
-import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengesResponseDto
 import com.wiacekdawid.codewars.data.remote.api.CodewarsService
 import com.wiacekdawid.codewars.data.remote.api.CompletedChallengesResponseDto
-import com.wiacekdawid.codewars.data.remote.api.ProgrammingLanguageWrapperDto
+import com.wiacekdawid.codewars.data.remote.mappers.AuthoredChallengeDtoToAuthoredChallengeMapper
+import com.wiacekdawid.codewars.data.remote.mappers.MemberDtoToMemberMapper
+import com.wiacekdawid.codewars.data.repository.ApiResponseCodeToRepositoryResponseCodeMapper
+import com.wiacekdawid.codewars.data.repository.RepositoryResponse
 import io.reactivex.Single
-import timber.log.Timber
 
 /**
  * Created by dawidwiacek on 29/04/2018.
@@ -14,45 +16,48 @@ import timber.log.Timber
 
 class RemoteDataSource(private val codewarsService: CodewarsService) {
 
-    companion object {
-        const val DEFAULT_ITEM_PER_PAGE = 200
-    }
-
-    fun getMember(searchUsername: String?): Single<Member> {
+    fun getMember(searchUsername: String): Single<RepositoryResponse<Member>> {
         return codewarsService.getMember(searchUsername)
-                .doOnError{
-                    Timber.e(it)
-                }
                 .map {
-                    var member = Member()
-                    if(it.userName != null) {
-                        member.userName = it.userName as String
-                        member.name = it.name
-                        member.rank = it.ranks?.rank?.rank ?: Member.DEFAULT_RANK
-                        member.lastSearchTime = System.currentTimeMillis()
-                        member.bestLanguage = getBestLanguge(it.ranks?.languages)
+                    var response = RepositoryResponse<Member>()
+                    with(response) {
+                        code = ApiResponseCodeToRepositoryResponseCodeMapper.transform(it.code())
+                        data = it.body()?.let { return@let MemberDtoToMemberMapper.transform(it) }
+                        message = it.message()
                     }
-                    member
+                    response
                 }
     }
 
-    private fun getBestLanguge(list: List<ProgrammingLanguageWrapperDto>?): String? {
-        var bestLanguage: String? = null
-        var maxRank = Integer.MIN_VALUE
-        list?.forEach{
-            if(it.rank > maxRank) {
-                bestLanguage = it.name + " " + it.score
-            }
-        }
 
-        return bestLanguage
-    }
 
-    fun getCompletedChallenges(username: String, page: Int): Single<CompletedChallengesResponseDto> {
+    fun getCompletedChallenges(username: String, page: Int): Single<RepositoryResponse<CompletedChallengesResponseDto>> {
         return codewarsService.getCompletedChallenges(username, page)
+                .map {
+                    var response = RepositoryResponse<CompletedChallengesResponseDto>()
+                    with(response) {
+                        code = ApiResponseCodeToRepositoryResponseCodeMapper.transform(it.code())
+                        data = it.body()
+                        message = it.message()
+                    }
+                    response
+                }
     }
 
-    fun getAuthoredChallenges(username: String): Single<AuthoredChallengesResponseDto> {
+    fun getAuthoredChallenges(username: String): Single<RepositoryResponse<List<AuthoredChallenge>>> {
         return codewarsService.getAuthoredChallenges(username)
+                .map {
+                    var response = RepositoryResponse<List<AuthoredChallenge>>()
+                    with(response) {
+                        code = ApiResponseCodeToRepositoryResponseCodeMapper.transform(it.code())
+                        var listOfAuthoredChallenge: MutableList<AuthoredChallenge> = mutableListOf()
+                        it.body()?.data?.forEach {
+                            listOfAuthoredChallenge.add(AuthoredChallengeDtoToAuthoredChallengeMapper.transform(it))
+                        }
+                        data = listOfAuthoredChallenge
+                        message = it.message()
+                    }
+                    response
+                }
     }
 }

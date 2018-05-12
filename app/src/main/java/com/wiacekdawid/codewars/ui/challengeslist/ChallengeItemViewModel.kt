@@ -9,15 +9,11 @@ import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
  * Created by dawidwiacek on 01/05/2018.
  */
 
-class ChallengeItemViewModel(userName: String = "",
-                             id: String = "",
-                             isCompleted: Boolean = true,
+class ChallengeItemViewModel(var userName: String = "",
+                             var id: String = "",
+                             var isCompleted: Boolean = true,
                              name: String = "",
                              val attachedCodewarsActivity: AttachedCodewarsActivity): BaseObservable() {
-
-    var userName = userName
-    var id = id
-    var isCompleted = isCompleted
 
     @get:Bindable
     var name = name

@@ -7,4 +7,4 @@ import com.google.gson.annotations.SerializedName
  */
 
 data class CompletedChallengesResponseDto(@SerializedName("data")
-                    var data: List<CompletedChallengeDto>)
+                    var data: List<CompletedChallengeDto>?)

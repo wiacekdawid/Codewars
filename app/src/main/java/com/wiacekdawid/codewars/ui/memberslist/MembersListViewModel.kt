@@ -7,7 +7,6 @@ import com.wiacekdawid.codewars.data.repository.CodewarsRepository
 import com.wiacekdawid.codewars.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.internal.schedulers.ScheduledDirectPeriodicTask
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 import timber.log.Timber
@@ -76,7 +75,7 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                 foundedMember.postValue("")
                 errorMsgVisibility.postValue(false)
                 noFoundMemberMsgVisibility.postValue(false)
-                compositeDisposable.add(codewarsRepository.getMember(searchText = it)
+                compositeDisposable.add(codewarsRepository.getMember(userName = it)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnError {

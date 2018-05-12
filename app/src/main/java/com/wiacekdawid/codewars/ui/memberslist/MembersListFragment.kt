@@ -44,12 +44,15 @@ class MembersListFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentMembersListBinding = FragmentMembersListBinding.inflate(inflater, container, false)
-        fragmentMembersListBinding?.viewmodel = membersListViewModel
         fragmentMembersListBinding?.setLifecycleOwner(this)
         setupList()
         return fragmentMembersListBinding?.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fragmentMembersListBinding?.viewmodel = membersListViewModel
+        super.onViewCreated(view, savedInstanceState)
+    }
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.members_sort_menu, menu)
     }

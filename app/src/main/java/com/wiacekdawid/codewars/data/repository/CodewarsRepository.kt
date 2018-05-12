@@ -7,10 +7,8 @@ import com.wiacekdawid.codewars.data.local.CompletedChallenge
 import com.wiacekdawid.codewars.data.local.LocalDataSource
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
-import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengesResponseDto
 import com.wiacekdawid.codewars.data.remote.api.CompletedChallengesResponseDto
-import io.reactivex.Completable
-import io.reactivex.Maybe
+import com.wiacekdawid.codewars.data.remote.mappers.CompletedChallengeDtoToCompletedChallengeMapper
 import io.reactivex.Single
 
 
@@ -22,86 +20,96 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                          val localDataSource: LocalDataSource,
                          val connectivityManager: ConnectivityManager) {
 
-    private var memberList: HashMap<String, Member> = HashMap()
+    private var memberCache: HashMap<String, Member> = HashMap()
     private var currentPage = 0
 
     fun resetPaginationData() {
         currentPage = 0
     }
 
-    fun getLastSearchedMembersSortedByDate(): Maybe<List<Member>> = localDataSource.membersDao().getAllMembersSortedByLastSearchedTime()
+    fun getLastSearchedMembersSortedByDate(): Single<RepositoryResponse<List<Member>>> = localDataSource.getMembersSortedByLastSearchedTime()
 
-    fun getLastSearchedMembersSortedByRank(): Maybe<List<Member>> = localDataSource.membersDao().getAllMembersSortedByRank()
+    fun getLastSearchedMembersSortedByRank(): Single<RepositoryResponse<List<Member>>> = localDataSource.getMembersSortedByRank()
 
-    fun getMember(searchText: String): Single<Member> {
+    fun getMember(userName: String): Single<RepositoryResponse<Member>> {
 
-        var member = memberList[searchText]
+        val member = memberCache[userName]
 
         // if member is in our cache we return it
         if(member != null) {
-            return Single.just(member)
+            return Single.just(RepositoryResponse(data = member))
         }
         else {
             val activeNetwork = connectivityManager.activeNetworkInfo
 
             if(activeNetwork != null && activeNetwork.isConnectedOrConnecting) {
 
-                return localDataSource.membersDao().getMember(searchText)
-                        .switchIfEmpty(remoteDataSource.getMember(searchText))
-                        .doOnSuccess {
-                            if (it.userName != Member.DEFAULT_USER_NAME) {
-                                localDataSource.membersDao().insert(it)
-                                memberList[it.userName] = it
+                return localDataSource.getMember(userName)
+                        .flatMap {
+                            if(it.code == RepositoryResponse.ResponseCode.SUCCESS) {
+                                return@flatMap remoteDataSource.getMember(userName)
+                                        // on success api call we store member in DB and local cache
+                                        .doOnSuccess {
+                                            it?.data?.let {
+                                                localDataSource.insertMember(it).subscribe()
+                                                memberCache[it.userName] = it
+                                            }
+                                        }
                             }
+                            Single.just(it)
                         }
             }
-            return localDataSource.membersDao().getMember(searchText)
-                    .switchIfEmpty(Single.just(Member()))
+            return localDataSource.getMember(userName)
         }
     }
 
     fun getCompletedChallenges(username: String): DataSource.Factory<Int, CompletedChallenge> {
-        return localDataSource.completedChallengeDao().getAllCompletedChallengesForMember(username)
+        return localDataSource.getAllCompletedChallengesForUserName(username)
     }
 
     fun getAuthoredChallenges(username: String): DataSource.Factory<Int, AuthoredChallenge> {
-        return localDataSource.authoredChallengeDao().getAllAuthoredChallengesForMember(username)
+        return localDataSource.getAllAuthoredChallengesForUserName(username)
     }
 
-    fun refreshAuthoredChallenges(userName: String): Single<AuthoredChallengesResponseDto> {
+    fun refreshAuthoredChallenges(userName: String): Single<RepositoryResponse<List<AuthoredChallenge>>> {
         return remoteDataSource
                 .getAuthoredChallenges(userName)
                 .doOnSuccess {
-                    it.data?.forEach {
-                        localDataSource
-                                .authoredChallengeDao()
-                                .insert(AuthoredChallenge(id = it.id, name = it.name, userName = userName))
+                    if(it.code == RepositoryResponse.ResponseCode.SUCCESS) {
+                        localDataSource.insertAuthoredChallenges(it.data).subscribe()
                     }
                 }
     }
 
-    fun loadMoreCompletedChallenges(userName: String): Single<CompletedChallengesResponseDto> {
+    fun loadMoreCompletedChallenges(userName: String): Single<RepositoryResponse<CompletedChallengesResponseDto>> {
         return remoteDataSource
                 .getCompletedChallenges(userName, currentPage)
                 .doOnSuccess {
-                    if(it.data?.size > 0) {
-                        currentPage++
+                    if(it.code == RepositoryResponse.ResponseCode.SUCCESS) {
+                        if(it.data?.data?.isEmpty() == false) {
+                            currentPage++
+                            it.data?.data?.let {
+                                var listOfCompletedChallenge: MutableList<CompletedChallenge> = mutableListOf()
+                                it.forEach {
+                                    listOfCompletedChallenge.add(CompletedChallengeDtoToCompletedChallengeMapper.transform(it))
+                                }
+                                localDataSource.insertCompletedChallenges(listOfCompletedChallenge)
+                            }
+                        }
+                        else {
+                            currentPage = 0
+                        }
                     }
                     else {
                         currentPage = 0
                     }
-                    it.data?.forEach {
-                        localDataSource
-                                .completedChallengeDao()
-                                .insert(CompletedChallenge(id = it.id, name = it.name, userName = userName))
-                    }
                 }
     }
 
-    fun getCompletedChallenge(id: String): Single<CompletedChallenge> =
-            localDataSource.completedChallengeDao().getCompletedChallengesForId(id)
+    fun getCompletedChallenge(id: String): Single<RepositoryResponse<CompletedChallenge>> =
+            localDataSource.getCompletedChallengeForId(id)
 
-    fun getAuthoredChallenge(id: String): Single<AuthoredChallenge> =
-            localDataSource.authoredChallengeDao().getAuthoredChallengeForId(id)
+    fun getAuthoredChallenge(id: String): Single<RepositoryResponse<AuthoredChallenge>> =
+            localDataSource.getAuthoredChallengeForId(id)
 
 }

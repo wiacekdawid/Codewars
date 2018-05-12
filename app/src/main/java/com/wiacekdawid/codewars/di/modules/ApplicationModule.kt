@@ -4,7 +4,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import android.net.ConnectivityManager
 import com.wiacekdawid.codewars.CodewarsApplication
-import com.wiacekdawid.codewars.data.local.LocalDataSource
+import com.wiacekdawid.codewars.data.local.CodewarsDatabase
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
 import com.wiacekdawid.codewars.data.remote.api.CodewarsService
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
@@ -35,7 +35,7 @@ class ApplicationModule {
                                            remoteDataSource: RemoteDataSource,
                                            connectivityManager: ConnectivityManager) =
         CodewarsRepository(remoteDataSource, Room.databaseBuilder(codewarsApplication,
-                LocalDataSource::class.java, "codewars.db")
+                CodewarsDatabase::class.java, "codewars.db")
                 .build(), connectivityManager)
 
     @ApplicationScope

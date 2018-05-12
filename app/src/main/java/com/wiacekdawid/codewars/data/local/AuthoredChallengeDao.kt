@@ -5,7 +5,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import io.reactivex.Single
+import io.reactivex.Maybe
 
 /**
  * Created by dawidwiacek on 01/05/2018.
@@ -20,8 +20,8 @@ interface AuthoredChallengeDao {
     fun deleteAll()
 
     @Query("SELECT * from authored_challenge_table WHERE userName=:userName ORDER BY id ASC")
-    fun getAllAuthoredChallengesForMember(userName: String): DataSource.Factory<Int, AuthoredChallenge>
+    fun getAllAuthoredChallengesForUserName(userName: String): DataSource.Factory<Int, AuthoredChallenge>
 
-    @Query("SELECT * from authored_challenge_table WHERE id=:id")
-    fun getAuthoredChallengeForId(id: String): Single<AuthoredChallenge>
+    @Query("SELECT * from authored_challenge_table WHERE id=:id LIMIT 1")
+    fun getAuthoredChallengeForId(id: String): Maybe<AuthoredChallenge>
 }

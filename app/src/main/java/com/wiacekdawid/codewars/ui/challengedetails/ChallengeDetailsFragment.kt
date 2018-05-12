@@ -60,10 +60,13 @@ class ChallengeDetailsFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentChallengeDetailsBinding = FragmentChallengeDetailsBinding.inflate(inflater, container, false)
         fragmentChallengeDetailsBinding?.setLifecycleOwner(this)
-        fragmentChallengeDetailsBinding?.challengeDetailsViewModel = challengeDetailsViewModel
         return fragmentChallengeDetailsBinding?.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fragmentChallengeDetailsBinding?.challengeDetailsViewModel = challengeDetailsViewModel
+        super.onViewCreated(view, savedInstanceState)
+    }
     override fun onPrepareOptionsMenu(menu: Menu?) {
         super.onPrepareOptionsMenu(menu)
         var menuItem = menu?.findItem(R.id.msm_i_sort)

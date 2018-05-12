@@ -17,5 +17,5 @@ data class AuthoredChallenge(
         @PrimaryKey
         @NonNull
         val id: String,
-        val name: String?,
-        val userName: String)
+        val name: String? = null,
+        val userName: String = Member.DEFAULT_USER_NAME)
