@@ -12,7 +12,7 @@ import io.reactivex.Single
 class LocalDataSource(val codewarsDatabase: CodewarsDatabase) {
 
     companion object {
-        const val DEFAULT_EMPTY_ID = -1
+        const val DEFAULT_EMPTY_USER_NAME = "DEFAULT_EMPTY_USER_NAME"
         const val DEFAULT_EMPTY_STRING_ID = "DEFAULT_EMPTY_STRING_ID"
     }
 
@@ -21,11 +21,11 @@ class LocalDataSource(val codewarsDatabase: CodewarsDatabase) {
     fun getMember(userName: String): Single<RepositoryResponse<Member>> {
         return codewarsDatabase.membersDao()
                 .getMember(userName)
-                .switchIfEmpty(Single.just(Member(id = DEFAULT_EMPTY_ID)))
+                .switchIfEmpty(Single.just(Member(userName = DEFAULT_EMPTY_USER_NAME)))
                 .map {
                     with(it) {
                         var response = RepositoryResponse<Member>()
-                        if(id == DEFAULT_EMPTY_ID){
+                        if(userName == DEFAULT_EMPTY_USER_NAME){
                             response.code = RepositoryResponse.ResponseCode.NO_DATA
                         }
                         else {

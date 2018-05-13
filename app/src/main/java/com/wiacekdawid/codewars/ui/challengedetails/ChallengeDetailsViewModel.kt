@@ -3,6 +3,7 @@ package com.wiacekdawid.codewars.ui.challengedetails
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
+import com.wiacekdawid.codewars.data.repository.RepositoryResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -30,11 +31,26 @@ class ChallengeDetailsViewModel(var username: String,
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
-                                userName.postValue(it.userName)
-                                name.postValue(it.name)
-                                id.postValue(it.id)
+                                when(it.code) {
+                                    RepositoryResponse.ResponseCode.SUCCESS -> {
+                                        userName.postValue(it.data?.userName)
+                                        name.postValue(it.data?.name)
+                                        id.postValue(it.data?.id)
+                                    }
+                                    RepositoryResponse.ResponseCode.NO_DATA -> {
+                                        //todo handle no data in UI
+                                    }
+                                    RepositoryResponse.ResponseCode.ERROR,
+                                    RepositoryResponse.ResponseCode.SERVER_ERROR -> {
+                                        //todo handle error in UI
+                                    }
+                                    else -> {
+                                        //todo handle error in UI
+                                    }
+                                }
                             },
                             {
+                                //todo handle error in UI
                                 Timber.e(it)
                             })
             )
@@ -45,11 +61,26 @@ class ChallengeDetailsViewModel(var username: String,
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
-                                userName.postValue(it.userName)
-                                name.postValue(it.name)
-                                id.postValue(it.id)
+                                when(it.code) {
+                                    RepositoryResponse.ResponseCode.SUCCESS -> {
+                                        userName.postValue(it.data?.userName)
+                                        name.postValue(it.data?.name)
+                                        id.postValue(it.data?.id)
+                                    }
+                                    RepositoryResponse.ResponseCode.NO_DATA -> {
+                                        //todo handle no data in UI
+                                    }
+                                    RepositoryResponse.ResponseCode.ERROR,
+                                    RepositoryResponse.ResponseCode.SERVER_ERROR -> {
+                                        //todo handle error in UI
+                                    }
+                                    else -> {
+                                        //todo handle error in UI
+                                    }
+                                }
                             },
                             {
+                                //todo handle error in UI
                                 Timber.e(it)
                             })
             )

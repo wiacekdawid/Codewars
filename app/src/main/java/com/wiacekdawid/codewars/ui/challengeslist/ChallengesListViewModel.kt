@@ -8,6 +8,7 @@ import android.arch.paging.PagedList
 import android.view.MenuItem
 import com.wiacekdawid.codewars.R
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
+import com.wiacekdawid.codewars.data.repository.RepositoryResponse
 import com.wiacekdawid.codewars.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -57,12 +58,22 @@ class ChallengesListViewModel(var username: String, val codewarsRepository: Code
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
-                                isLoading.postValue(false)
-                                if (it.data == null || it.data.isEmpty()) {
-                                    noMoreCompletedChallengeData = true
-                                    boundaryCallback = null
+                                when(it.code) {
+                                    RepositoryResponse.ResponseCode.NO_DATA -> {
+                                        noMoreCompletedChallengeData = true
+                                        boundaryCallback = null
+                                    }
+                                    RepositoryResponse.ResponseCode.ERROR,
+                                    RepositoryResponse.ResponseCode.SERVER_ERROR -> {
+                                        //todo handle error in UI
+                                    }
+                                    else -> {
+                                        //todo handle error in UI
+                                    }
                                 }
+                                isLoading.postValue(false)
                             }, {
+                                //todo handle error in UI
                                 isLoading.postValue(false)
                                 Timber.e(it)
                             })

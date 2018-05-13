@@ -27,9 +27,9 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
         currentPage = 0
     }
 
-    fun getLastSearchedMembersSortedByDate(): Single<RepositoryResponse<List<Member>>> = localDataSource.getMembersSortedByLastSearchedTime()
+    fun getLastSearchedMembersSortedByDate(limit: Int): Single<RepositoryResponse<List<Member>>> = localDataSource.getMembersSortedByLastSearchedTime(limit)
 
-    fun getLastSearchedMembersSortedByRank(): Single<RepositoryResponse<List<Member>>> = localDataSource.getMembersSortedByRank()
+    fun getLastSearchedMembersSortedByRank(limit: Int): Single<RepositoryResponse<List<Member>>> = localDataSource.getMembersSortedByRank(limit)
 
     fun getMember(userName: String): Single<RepositoryResponse<Member>> {
 
@@ -91,7 +91,7 @@ class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                             it.data?.data?.let {
                                 var listOfCompletedChallenge: MutableList<CompletedChallenge> = mutableListOf()
                                 it.forEach {
-                                    listOfCompletedChallenge.add(CompletedChallengeDtoToCompletedChallengeMapper.transform(it))
+                                    listOfCompletedChallenge.add(CompletedChallengeDtoToCompletedChallengeMapper.transform(it, userName))
                                 }
                                 localDataSource.insertCompletedChallenges(listOfCompletedChallenge)
                             }

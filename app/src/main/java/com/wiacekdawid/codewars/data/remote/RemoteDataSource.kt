@@ -52,7 +52,7 @@ class RemoteDataSource(private val codewarsService: CodewarsService) {
                         code = ApiResponseCodeToRepositoryResponseCodeMapper.transform(it.code())
                         var listOfAuthoredChallenge: MutableList<AuthoredChallenge> = mutableListOf()
                         it.body()?.data?.forEach {
-                            listOfAuthoredChallenge.add(AuthoredChallengeDtoToAuthoredChallengeMapper.transform(it))
+                            listOfAuthoredChallenge.add(AuthoredChallengeDtoToAuthoredChallengeMapper.transform(it, username))
                         }
                         data = listOfAuthoredChallenge
                         message = it.message()

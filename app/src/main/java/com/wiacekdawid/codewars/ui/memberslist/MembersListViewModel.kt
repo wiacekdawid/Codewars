@@ -4,11 +4,11 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
+import com.wiacekdawid.codewars.data.repository.RepositoryResponse
 import com.wiacekdawid.codewars.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
 import timber.log.Timber
 
 /**
@@ -16,6 +16,8 @@ import timber.log.Timber
  */
 
 class MembersListViewModel(private val codewarsRepository: CodewarsRepository): ViewModel() {
+
+    private val LAST_SEARCHED_MEMBERS_LIMIT = 5
 
     private var compositeDisposable = CompositeDisposable()
 
@@ -33,17 +35,34 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
     }
 
     fun refreshLastSearchedMembersSortedByDate() {
-        compositeDisposable.add(codewarsRepository.getLastSearchedMembersSortedByDate()
+        compositeDisposable.add(codewarsRepository.getLastSearchedMembersSortedByDate(LAST_SEARCHED_MEMBERS_LIMIT)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    lastSearchedMembers.postValue(it.take(5))
-                    lastSearchedMembersVisibility.postValue(true)
+                    when(it.code) {
+                        RepositoryResponse.ResponseCode.SUCCESS -> {
+                            lastSearchedMembers.postValue(it.data)
+                            lastSearchedMembersVisibility.postValue(true)
+                        }
+                        RepositoryResponse.ResponseCode.NO_DATA -> {
+                            lastSearchedMembersVisibility.postValue(false)
+                            lastSearchedMembers.postValue(it.data)
+                        }
+                        RepositoryResponse.ResponseCode.ERROR,
+                        RepositoryResponse.ResponseCode.SERVER_ERROR -> {
+                            //todo handle error in UI
+                            lastSearchedMembersVisibility.postValue(false)
+                            lastSearchedMembers.postValue(it.data)
+                        }
+                        else -> {
+                            //todo handle error in UI
+                            lastSearchedMembersVisibility.postValue(false)
+                            lastSearchedMembers.postValue(it.data)
+                        }
+                    }
+
                 }, {
                     Timber.e(it)
-                    lastSearchedMembersVisibility.postValue(false)
-                    lastSearchedMembers.postValue(listOf())
-                },{
                     lastSearchedMembersVisibility.postValue(false)
                     lastSearchedMembers.postValue(listOf())
                 })
@@ -51,17 +70,34 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
     }
 
     fun refreshLastSearchedMembersSortedByRank() {
-        compositeDisposable.add(codewarsRepository.getLastSearchedMembersSortedByRank()
+        compositeDisposable.add(codewarsRepository.getLastSearchedMembersSortedByRank(LAST_SEARCHED_MEMBERS_LIMIT)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    lastSearchedMembers.postValue(it.take(5))
-                    lastSearchedMembersVisibility.postValue(true)
+                    when(it.code) {
+                        RepositoryResponse.ResponseCode.SUCCESS -> {
+                            lastSearchedMembers.postValue(it.data)
+                            lastSearchedMembersVisibility.postValue(true)
+                        }
+                        RepositoryResponse.ResponseCode.NO_DATA -> {
+                            lastSearchedMembersVisibility.postValue(false)
+                            lastSearchedMembers.postValue(it.data)
+                        }
+                        RepositoryResponse.ResponseCode.ERROR,
+                        RepositoryResponse.ResponseCode.SERVER_ERROR -> {
+                            //todo handle error in UI
+                            lastSearchedMembersVisibility.postValue(false)
+                            lastSearchedMembers.postValue(it.data)
+                        }
+                        else -> {
+                            //todo handle error in UI
+                            lastSearchedMembersVisibility.postValue(false)
+                            lastSearchedMembers.postValue(it.data)
+                        }
+                    }
+
                 }, {
                     Timber.e(it)
-                    lastSearchedMembersVisibility.postValue(false)
-                    lastSearchedMembers.postValue(listOf())
-                },{
                     lastSearchedMembersVisibility.postValue(false)
                     lastSearchedMembers.postValue(listOf())
                 })
@@ -78,28 +114,29 @@ class MembersListViewModel(private val codewarsRepository: CodewarsRepository): 
                 compositeDisposable.add(codewarsRepository.getMember(userName = it)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError {
-                            if((it as? HttpException)?.code() == 404) {
-                                noFoundMemberMsgVisibility.postValue(true)
-                            }
-                        }
                         .subscribe({
-                            member: Member? ->
-                            member?.let {
-                                if(member.userName == Member.DEFAULT_USER_NAME) {
-                                    noFoundMemberMsgVisibility.postValue(true)
-                                }
-                                else {
-                                    foundedMember.postValue(member.userName)
-                                }
-                            }
-                            loading.postValue(false)
-
-                        }, {
-                            throwable: Throwable ->
-                            Timber.e(throwable)
-                            loading.postValue(false)
-                        })
+                                    when(it.code) {
+                                        RepositoryResponse.ResponseCode.SUCCESS -> {
+                                            foundedMember.postValue(it.data?.userName)
+                                        }
+                                        RepositoryResponse.ResponseCode.NO_DATA -> {
+                                            noFoundMemberMsgVisibility.postValue(true)
+                                        }
+                                        RepositoryResponse.ResponseCode.ERROR,
+                                        RepositoryResponse.ResponseCode.SERVER_ERROR -> {
+                                            //todo handle error in UI
+                                        }
+                                        else -> {
+                                            //todo handle error in UI
+                                        }
+                                    }
+                                    loading.postValue(false)
+                                },
+                                {
+                                    //todo handle error in UI
+                                    Timber.e(it)
+                                    loading.postValue(false)
+                                })
                 )
             }
         }
