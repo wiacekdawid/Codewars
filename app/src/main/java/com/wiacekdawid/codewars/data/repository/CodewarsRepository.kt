@@ -18,9 +18,9 @@ import io.reactivex.Single
 
 class CodewarsRepository(val remoteDataSource: RemoteDataSource,
                          val localDataSource: LocalDataSource,
-                         val connectivityManager: ConnectivityManager) {
+                         val connectivityManager: ConnectivityManager,
+                         var memberCache: HashMap<String, Member> = HashMap()) {
 
-    private var memberCache: HashMap<String, Member> = HashMap()
     private var currentPage = 0
 
     fun resetPaginationData() {
