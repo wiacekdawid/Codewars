@@ -31,19 +31,22 @@ class CodewarsRepositoryTest {
     @Mock
     private lateinit var network: NetworkInfo
 
+    val SEARCHED_MEMBER_USER_NAME = "user_name"
+
+    private lateinit var codewarsRepository: CodewarsRepository
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        codewarsRepository = CodewarsRepository(remoteDataSource = remoteDataSource,
+                localDataSource = localDataSource, connectivityManager = connectivityManager,
+                memberCache = memberList)
     }
 
     @Test
     fun memberIsReturnedFromCache() {
         //given
-        val SEARCHED_MEMBER_USER_NAME = "user_name"
         val member = Member(userName = SEARCHED_MEMBER_USER_NAME, name = "test", rank = 1, bestLanguage = "test", lastSearchTime = 1)
-        var codewarsRepository = CodewarsRepository(remoteDataSource = remoteDataSource,
-                localDataSource = localDataSource, connectivityManager = connectivityManager,
-                memberCache = memberList)
         Mockito.`when`(memberList[SEARCHED_MEMBER_USER_NAME]).thenReturn(member)
 
         //when / expected
@@ -53,11 +56,6 @@ class CodewarsRepositoryTest {
     @Test
     fun memberIsReturnedFromLocalDataSourceOrApi() {
         //given
-        val SEARCHED_MEMBER_USER_NAME = "user_name"
-        val member = Member(userName = SEARCHED_MEMBER_USER_NAME, name = "test", rank = 1, bestLanguage = "test", lastSearchTime = 1)
-        var codewarsRepository = CodewarsRepository(remoteDataSource = remoteDataSource,
-                localDataSource = localDataSource, connectivityManager = connectivityManager,
-                memberCache = memberList)
         Mockito.`when`(memberList[SEARCHED_MEMBER_USER_NAME]).thenReturn(null)
         Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(network)
         Mockito.`when`(network.isConnectedOrConnecting).thenReturn(true)
@@ -74,11 +72,6 @@ class CodewarsRepositoryTest {
     @Test
     fun memberIsReturnedFromLocalDataSource() {
         //given
-        val SEARCHED_MEMBER_USER_NAME = "user_name"
-        val member = Member(userName = SEARCHED_MEMBER_USER_NAME, name = "test", rank = 1, bestLanguage = "test", lastSearchTime = 1)
-        var codewarsRepository = CodewarsRepository(remoteDataSource = remoteDataSource,
-                localDataSource = localDataSource, connectivityManager = connectivityManager,
-                memberCache = memberList)
         Mockito.`when`(memberList[SEARCHED_MEMBER_USER_NAME]).thenReturn(null)
         Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(network)
         Mockito.`when`(network.isConnectedOrConnecting).thenReturn(false)
