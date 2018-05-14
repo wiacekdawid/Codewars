@@ -30,10 +30,10 @@ android {
 
 ext {
     multidexVersion = '1.0.3'
-    supportLibraryVersion = '27.1.0'
+    supportLibraryVersion = '27.1.1'
     archLifecycleVersion = '1.1.1'
-    archPersistenceVersion = '1.0.0'
-    archPagingVersion = '1.0.0-rc1'
+    archPersistenceVersion = '1.1.0'
+    archPagingVersion = '1.0.0'
     constraintLayoutVersion = '1.1.0'
     rxandroidVersion = '2.0.2'
     rxjavaVersion = '2.1.12'
@@ -44,6 +44,7 @@ ext {
     timberVersion = '4.7.0'
 
     junitVersion = '4.12'
+    mockitoVersion = '2.18.3'
 
     testRunnerVersion = '1.0.1'
     espressoVersion = '3.0.1'
@@ -97,6 +98,7 @@ dependencies {
 
     // Unit Tests
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
 
     // UI Tests
     androidTestImplementation "com.android.support.test:runner:$testRunnerVersion"
