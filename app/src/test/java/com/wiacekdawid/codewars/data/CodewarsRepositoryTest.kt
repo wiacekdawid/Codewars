@@ -6,7 +6,9 @@ import com.wiacekdawid.codewars.data.local.LocalDataSource
 import com.wiacekdawid.codewars.data.local.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
+import com.wiacekdawid.codewars.data.repository.CodewarsRepositoryImp
 import com.wiacekdawid.codewars.data.repository.RepositoryResponse
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
@@ -38,39 +40,52 @@ class CodewarsRepositoryTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        codewarsRepository = CodewarsRepository(remoteDataSource = remoteDataSource,
+        codewarsRepository = CodewarsRepositoryImp(remoteDataSource = remoteDataSource,
                 localDataSource = localDataSource, connectivityManager = connectivityManager,
                 memberCache = memberList)
     }
 
     @Test
-    fun memberIsReturnedFromCache() {
+    fun getMember_MemberIsSavedInCache_MemberIsReturnedFromCache() {
         //given
         val member = Member(userName = SEARCHED_MEMBER_USER_NAME, name = "test", rank = 1, bestLanguage = "test", lastSearchTime = 1)
         Mockito.`when`(memberList[SEARCHED_MEMBER_USER_NAME]).thenReturn(member)
 
-        //when / expected
-        Mockito.`when`(codewarsRepository.getMember(SEARCHED_MEMBER_USER_NAME)).thenReturn(Single.just(RepositoryResponse(data = member)))
+        //when
+        val testObserver = codewarsRepository.getMember(SEARCHED_MEMBER_USER_NAME).test()
+
+        //expected
+        testObserver.assertNoErrors()
+        testObserver.assertComplete()
+        testObserver.assertValue{ it.data == member }
     }
 
     @Test
-    fun memberIsReturnedFromLocalDataSourceOrApi() {
+    fun getMember_NoMemberInCacheInternetIsOnNoMemberInDb_MemberIsReturnedFromRemoteDataSourceAndSavedInDb() {
         //given
+        val member = Member(userName = SEARCHED_MEMBER_USER_NAME, name = "test", rank = 1, bestLanguage = "test", lastSearchTime = 1)
         Mockito.`when`(memberList[SEARCHED_MEMBER_USER_NAME]).thenReturn(null)
         Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(network)
         Mockito.`when`(network.isConnectedOrConnecting).thenReturn(true)
-        Mockito.`when`(localDataSource.getMember(SEARCHED_MEMBER_USER_NAME)).thenReturn(Single.just(RepositoryResponse(code = RepositoryResponse.ResponseCode.SUCCESS)))
+        Mockito.`when`(localDataSource.getMember(SEARCHED_MEMBER_USER_NAME)).thenReturn(Single.just(RepositoryResponse(code = RepositoryResponse.ResponseCode.NO_DATA)))
+        Mockito.`when`(remoteDataSource.getMember(SEARCHED_MEMBER_USER_NAME)).thenReturn(Single.just(RepositoryResponse(code = RepositoryResponse.ResponseCode.NO_DATA,
+                data = member)))
+        Mockito.`when`(localDataSource.insertMember(member)).thenReturn(Completable.complete())
 
         //when
-        codewarsRepository.getMember(SEARCHED_MEMBER_USER_NAME).subscribe({}, {})
+        val testObserver = codewarsRepository.getMember(SEARCHED_MEMBER_USER_NAME).test()
 
         //expected
+        testObserver.assertNoErrors()
+        testObserver.assertComplete()
         Mockito.verify(localDataSource, Mockito.atLeastOnce()).getMember(SEARCHED_MEMBER_USER_NAME)
+        Mockito.verify(localDataSource, Mockito.atLeastOnce()).insertMember(member)
+        Mockito.verify(memberList, Mockito.atLeastOnce()).put(member.userName, member)
         Mockito.verify(remoteDataSource, Mockito.atLeastOnce()).getMember(SEARCHED_MEMBER_USER_NAME)
     }
 
     @Test
-    fun memberIsReturnedFromLocalDataSource() {
+    fun getMember_NoMemberInCacheInternetIsOff_MemberIsReturnedFromDb() {
         //given
         Mockito.`when`(memberList[SEARCHED_MEMBER_USER_NAME]).thenReturn(null)
         Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(network)
@@ -78,9 +93,11 @@ class CodewarsRepositoryTest {
         Mockito.`when`(localDataSource.getMember(SEARCHED_MEMBER_USER_NAME)).thenReturn(Single.just(RepositoryResponse(code = RepositoryResponse.ResponseCode.ERROR)))
 
         //when
-        codewarsRepository.getMember(SEARCHED_MEMBER_USER_NAME).subscribe({}, {})
+        val testObserver = codewarsRepository.getMember(SEARCHED_MEMBER_USER_NAME).test()
 
         //expected
+        testObserver.assertNoErrors()
+        testObserver.assertComplete()
         Mockito.verify(localDataSource, Mockito.atLeastOnce()).getMember(SEARCHED_MEMBER_USER_NAME)
         Mockito.verify(remoteDataSource, Mockito.never()).getMember(SEARCHED_MEMBER_USER_NAME)
     }

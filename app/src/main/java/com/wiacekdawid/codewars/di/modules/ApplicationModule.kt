@@ -6,9 +6,12 @@ import android.net.ConnectivityManager
 import com.wiacekdawid.codewars.CodewarsApplication
 import com.wiacekdawid.codewars.data.local.CodewarsDatabase
 import com.wiacekdawid.codewars.data.local.LocalDataSource
+import com.wiacekdawid.codewars.data.local.LocalDataSourceImp
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
+import com.wiacekdawid.codewars.data.remote.RemoteDataSourceImp
 import com.wiacekdawid.codewars.data.remote.api.CodewarsService
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
+import com.wiacekdawid.codewars.data.repository.CodewarsRepositoryImp
 import com.wiacekdawid.codewars.di.components.CodewarsActivitySubcomponent
 import com.wiacekdawid.codewars.di.scopes.ApplicationScope
 import dagger.Module
@@ -28,12 +31,12 @@ class ApplicationModule {
 
     @ApplicationScope
     @Provides
-    internal fun provideRemoteDataSource(codewarsService: CodewarsService) = RemoteDataSource(codewarsService)
+    internal fun provideRemoteDataSource(codewarsService: CodewarsService): RemoteDataSource = RemoteDataSourceImp(codewarsService)
 
     @ApplicationScope
     @Provides
-    internal fun provideLocalDataSource(codewarsApplication: CodewarsApplication) =
-            LocalDataSource(Room.databaseBuilder(codewarsApplication,
+    internal fun provideLocalDataSource(codewarsApplication: CodewarsApplication): LocalDataSource =
+            LocalDataSourceImp(Room.databaseBuilder(codewarsApplication,
                     CodewarsDatabase::class.java, "codewars.db")
                     .build())
 
@@ -41,8 +44,8 @@ class ApplicationModule {
     @Provides
     internal fun provideCodewarsRepository(localDataSource: LocalDataSource,
                                            remoteDataSource: RemoteDataSource,
-                                           connectivityManager: ConnectivityManager) =
-        CodewarsRepository(remoteDataSource, localDataSource, connectivityManager)
+                                           connectivityManager: ConnectivityManager): CodewarsRepository =
+        CodewarsRepositoryImp(remoteDataSource, localDataSource, connectivityManager)
 
     @ApplicationScope
     @Provides
