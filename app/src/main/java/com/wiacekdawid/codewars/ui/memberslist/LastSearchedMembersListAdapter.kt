@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import com.wiacekdawid.codewars.data.local.Member
+import com.wiacekdawid.codewars.data.local.model.Member
 import com.wiacekdawid.codewars.databinding.ItemLastSearchedMembersListBinding
 import com.wiacekdawid.codewars.R
 import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity

@@ -1,6 +1,9 @@
 package com.wiacekdawid.codewars.data.local
 
 import android.arch.paging.DataSource
+import com.wiacekdawid.codewars.data.local.model.AuthoredChallenge
+import com.wiacekdawid.codewars.data.local.model.CompletedChallenge
+import com.wiacekdawid.codewars.data.local.model.Member
 import com.wiacekdawid.codewars.data.repository.RepositoryResponse
 import io.reactivex.Completable
 import io.reactivex.Single

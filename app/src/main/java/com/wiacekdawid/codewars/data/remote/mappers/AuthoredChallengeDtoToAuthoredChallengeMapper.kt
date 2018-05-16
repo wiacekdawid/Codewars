@@ -1,7 +1,7 @@
 package com.wiacekdawid.codewars.data.remote.mappers
 
-import com.wiacekdawid.codewars.data.local.AuthoredChallenge
-import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengeDto
+import com.wiacekdawid.codewars.data.local.model.AuthoredChallenge
+import com.wiacekdawid.codewars.data.remote.api.model.AuthoredChallengeDto
 
 /**
  * Created by dawidwiacek on 12/05/2018.

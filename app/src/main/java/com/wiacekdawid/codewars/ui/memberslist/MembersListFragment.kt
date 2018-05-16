@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.*
 import com.wiacekdawid.codewars.R
-import com.wiacekdawid.codewars.data.local.Member
+import com.wiacekdawid.codewars.data.local.model.Member
 import com.wiacekdawid.codewars.databinding.FragmentMembersListBinding
 import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
 import dagger.android.support.AndroidSupportInjection

@@ -2,7 +2,7 @@ package com.wiacekdawid.codewars.ui.memberslist
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.wiacekdawid.codewars.data.local.Member
+import com.wiacekdawid.codewars.data.local.model.Member
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
 import com.wiacekdawid.codewars.data.repository.RepositoryResponse
 import com.wiacekdawid.codewars.util.SingleLiveEvent

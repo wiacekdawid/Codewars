@@ -1,9 +1,9 @@
 package com.wiacekdawid.codewars.mappers
 
 import com.wiacekdawid.codewars.data.remote.api.MemberDto
-import com.wiacekdawid.codewars.data.remote.api.ProgrammingLanguageWrapperDto
-import com.wiacekdawid.codewars.data.remote.api.RanksDto
-import com.wiacekdawid.codewars.data.remote.api.RanksOverallDto
+import com.wiacekdawid.codewars.data.remote.api.model.ProgrammingLanguageWrapperDto
+import com.wiacekdawid.codewars.data.remote.api.model.RanksDto
+import com.wiacekdawid.codewars.data.remote.api.model.RanksOverallDto
 import com.wiacekdawid.codewars.data.remote.mappers.MemberDtoToMemberMapper
 import junit.framework.Assert
 import org.junit.Test

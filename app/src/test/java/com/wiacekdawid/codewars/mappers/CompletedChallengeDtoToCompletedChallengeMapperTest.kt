@@ -1,6 +1,6 @@
 package com.wiacekdawid.codewars.mappers
 
-import com.wiacekdawid.codewars.data.remote.api.CompletedChallengeDto
+import com.wiacekdawid.codewars.data.remote.api.model.CompletedChallengeDto
 import com.wiacekdawid.codewars.data.remote.mappers.CompletedChallengeDtoToCompletedChallengeMapper
 import junit.framework.Assert
 import org.junit.Test

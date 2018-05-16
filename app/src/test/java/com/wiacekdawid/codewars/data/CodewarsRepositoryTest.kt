@@ -3,7 +3,7 @@ package com.wiacekdawid.codewars.data
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import com.wiacekdawid.codewars.data.local.LocalDataSource
-import com.wiacekdawid.codewars.data.local.Member
+import com.wiacekdawid.codewars.data.local.model.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
 import com.wiacekdawid.codewars.data.repository.CodewarsRepository
 import com.wiacekdawid.codewars.data.repository.CodewarsRepositoryImp

@@ -3,7 +3,7 @@ package com.wiacekdawid.codewars.ui.memberslist
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import com.wiacekdawid.codewars.BR
-import com.wiacekdawid.codewars.data.local.Member
+import com.wiacekdawid.codewars.data.local.model.Member
 import com.wiacekdawid.codewars.ui.AttachedCodewarsActivity
 
 /**

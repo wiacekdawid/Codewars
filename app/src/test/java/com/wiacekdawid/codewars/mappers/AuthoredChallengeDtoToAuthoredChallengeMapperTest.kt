@@ -1,6 +1,6 @@
 package com.wiacekdawid.codewars.mappers
 
-import com.wiacekdawid.codewars.data.remote.api.AuthoredChallengeDto
+import com.wiacekdawid.codewars.data.remote.api.model.AuthoredChallengeDto
 import com.wiacekdawid.codewars.data.remote.mappers.AuthoredChallengeDtoToAuthoredChallengeMapper
 import junit.framework.Assert
 import org.junit.Test

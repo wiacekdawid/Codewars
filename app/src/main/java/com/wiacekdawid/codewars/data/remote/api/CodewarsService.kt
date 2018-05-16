@@ -1,5 +1,7 @@
 package com.wiacekdawid.codewars.data.remote.api
 
+import com.wiacekdawid.codewars.data.remote.api.model.AuthoredChallengesResponseDto
+import com.wiacekdawid.codewars.data.remote.api.model.CompletedChallengesResponseDto
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.GET

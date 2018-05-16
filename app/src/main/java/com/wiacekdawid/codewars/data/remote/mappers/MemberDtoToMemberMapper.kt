@@ -1,8 +1,8 @@
 package com.wiacekdawid.codewars.data.remote.mappers
 
-import com.wiacekdawid.codewars.data.local.Member
+import com.wiacekdawid.codewars.data.local.model.Member
 import com.wiacekdawid.codewars.data.remote.api.MemberDto
-import com.wiacekdawid.codewars.data.remote.api.ProgrammingLanguageWrapperDto
+import com.wiacekdawid.codewars.data.remote.api.model.ProgrammingLanguageWrapperDto
 
 /**
  * Created by dawidwiacek on 11/05/2018.
@@ -12,9 +12,11 @@ object MemberDtoToMemberMapper {
 
     fun transform(memberDto: MemberDto): Member {
         return with(memberDto) {
-            Member(userName = userName ?: Member.DEFAULT_USER_NAME,
+            Member(userName = userName
+                    ?: Member.DEFAULT_USER_NAME,
                     name = name,
-                    rank = ranks?.rank?.rank ?: Member.DEFAULT_RANK,
+                    rank = ranks?.rank?.rank
+                            ?: Member.DEFAULT_RANK,
                     bestLanguage = getBestLanguge(ranks?.languages))
         }
     }

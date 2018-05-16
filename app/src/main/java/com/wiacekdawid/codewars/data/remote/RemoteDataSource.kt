@@ -1,8 +1,8 @@
 package com.wiacekdawid.codewars.data.remote
 
-import com.wiacekdawid.codewars.data.local.AuthoredChallenge
-import com.wiacekdawid.codewars.data.local.Member
-import com.wiacekdawid.codewars.data.remote.api.CompletedChallengesResponseDto
+import com.wiacekdawid.codewars.data.local.model.AuthoredChallenge
+import com.wiacekdawid.codewars.data.local.model.Member
+import com.wiacekdawid.codewars.data.remote.api.model.CompletedChallengesResponseDto
 import com.wiacekdawid.codewars.data.repository.RepositoryResponse
 import io.reactivex.Single
 

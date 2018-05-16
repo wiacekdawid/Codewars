@@ -2,12 +2,12 @@ package com.wiacekdawid.codewars.data.repository
 
 import android.arch.paging.DataSource
 import android.net.ConnectivityManager
-import com.wiacekdawid.codewars.data.local.AuthoredChallenge
-import com.wiacekdawid.codewars.data.local.CompletedChallenge
+import com.wiacekdawid.codewars.data.local.model.AuthoredChallenge
+import com.wiacekdawid.codewars.data.local.model.CompletedChallenge
 import com.wiacekdawid.codewars.data.local.LocalDataSource
-import com.wiacekdawid.codewars.data.local.Member
+import com.wiacekdawid.codewars.data.local.model.Member
 import com.wiacekdawid.codewars.data.remote.RemoteDataSource
-import com.wiacekdawid.codewars.data.remote.api.CompletedChallengesResponseDto
+import com.wiacekdawid.codewars.data.remote.api.model.CompletedChallengesResponseDto
 import com.wiacekdawid.codewars.data.remote.mappers.CompletedChallengeDtoToCompletedChallengeMapper
 import io.reactivex.Single
 
